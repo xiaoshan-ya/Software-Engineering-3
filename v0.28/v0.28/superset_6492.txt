@@ -1,0 +1,18 @@
+ISSUE_INFO
+superset
+v0.28
+6492
+csc5k
+2018-12-05T18:47:22Z
+2019-04-17T12:40:53Z
+not_pull_request
+!deprecated-label:bug,inactive,v0.28,
+BEGIN_ISSUE
+Charts used to show "No Data was returned" or something like this when you apply a filter that causes a chart to not return any data. Now they return blank, which is confusing for end users
+
+COMMENT_INFO
+stale[bot]
+2018-12-05T18:47:22Z
+BEGIN_COMMENT
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.
+

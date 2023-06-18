@@ -1,0 +1,37 @@
+ISSUE_INFO
+superset
+v0.28
+6468
+nvitucci
+2018-11-30T15:44:42Z
+2019-04-17T11:40:40Z
+not_pull_request
+!deprecated-label:bug,inactive,v0.28,
+BEGIN_ISSUE
+Make sure these boxes are checked before submitting your issue - thank you!
+
+- [x] I have checked the superset logs for python stacktraces and included it here as text if there are any.
+- [x] I have reproduced the issue with at least the latest released version of superset.
+- [x] I have checked the issue tracker for the same issue and I haven't found one similar.
+
+
+### Superset version
+0.28.1
+
+### Expected results
+Gamma users should not be able to see databases they do not have access to.
+
+### Actual results
+Gamma users can see all the databases.
+
+### Steps to reproduce
+1. Create two databases, each with at least a table.
+2. Create a new role and user as shown in https://superset.incubator.apache.org/security.html#managing-gamma-per-data-source-access, giving it access to one table only.
+3. Log in with the new user.
+4. Click on "Sources" -> "Databases".
+COMMENT_INFO
+stale[bot]
+2018-11-30T15:44:42Z
+BEGIN_COMMENT
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.
+

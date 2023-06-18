@@ -1,0 +1,125 @@
+ISSUE_INFO
+superset
+v1.3
+17143
+oscarostlundgs
+2021-10-18T12:37:39Z
+2022-05-03T04:19:37Z
+not_pull_request
+.pinned,#bug,need:followup,v1.3,v1.4,v1.5,
+BEGIN_ISSUE
+Presto engine spec seems broken in 1.3.1 as DATE presto types are mapped to DATETIME sqlalchemy types which are not supported by the Presto engine spec. 
+
+#### How to reproduce the bug
+
+1. Install 1.3.1
+2. Sync column tables in Superset for a table that has a DATE column
+3. Check the Superset type of the column, should be DATETIME
+
+### Expected results
+
+Querying a Presto table with a time range should work. 
+
+### Actual results
+
+This will prevent Superset from query the table with time constraints. The query will return `Cannot apply operator: date >= varchar(26)` error. When looking at the generated query, temporal predicates do not get included in date conversion function, i.e.: 
+```
+WHERE "eventdate" >= '2021-09-18 00:00:00.000000'
+  AND "eventdate" < '2021-10-18 12:35:33.000000'
+```
+While it should be - and in prior versions was - : 
+```
+WHERE "eventdate" >= from_iso8601_date('2021-09-18 00:00:00.000000')
+  AND "eventdate" < from_iso8601_date('2021-10-18 12:35:33.000000')
+```
+
+### Environment
+
+- superset version: 1.3.1
+- Presto version: 343
+- pyhive version: 0.6.4
+- python version: 3.7
+
+
+### Additional context
+
+It seems like the issue comes from the Presto engine spec mapping Dates to Datetime in sqlalchemy ([see this line](https://github.com/apache/superset/blob/master/superset/db_engine_specs/presto.py#L511)) while the `convert_dttm` does not support DATETIME ([see here](https://github.com/apache/superset/blob/master/superset/db_engine_specs/presto.py#L746)). 
+
+Note that with past versions, DATE presto columns mapped to DATE Sqlalchmy columns. 
+
+COMMENT_INFO
+oscarostlundgs
+2021-10-18T12:37:39Z
+BEGIN_COMMENT
+Tried the following patch and it solves this particular issue. Date columns in Presto are mapped to DATE columns in SQLAlchemy. 
+
+
+```
+--- presto.py	2021-10-18 11:28:52.466574000 -0400
++++ presto-patched.py	2021-10-18 11:32:53.766105000 -0400
+@@ -508,7 +508,7 @@
+         ),
+         (
+             re.compile(r"^date.*", re.IGNORECASE),
+-            types.DATETIME(),
++            types.DATE(),
+             utils.GenericDataType.TEMPORAL,
+         ),
+         (
+```
+
+@villebro, I see this being changed as part of [this PR](https://github.com/apache/superset/pull/16634). 
+If you want to retain the DATETIME columns, another alternative would be to update the `convert_dttm` function to support DATETIME. 
+
+
+COMMENT_INFO
+villebro
+2021-10-18T12:37:39Z
+BEGIN_COMMENT
+Thanks for catching this @oscarostlundgs. I had not noticed that the Presto spec doesn't support `DATETIME` in `convert_dttm`. Would you be open to opening a PR for that? I'll be happy to help if needed
+COMMENT_INFO
+oscarostlundgs
+2021-10-18T12:37:39Z
+BEGIN_COMMENT
+I run Superset in a sandboxed corporate environment so not easy to create a PR. So there seems to be to solutions:
+1. Revert the conversion of SQL DATE types to Python DATE() types
+2. Change the convert_dttm method to accept DATETIME(). 
+
+1 may break the date adhoc filter (that you fixed in the previous PR). 
+
+I tried 2 with this patch: 
+```
+--- presto.py	2021-11-02 17:46:57.561409000 -0400
++++ presto-patched.py	2021-11-02 17:49:27.742966000 -0400
+@@ -748,7 +748,7 @@
+         tt = target_type.upper()
+         if tt == utils.TemporalType.DATE:
+             return f"""from_iso8601_date('{dttm.date().isoformat()}')"""
+-        if tt == utils.TemporalType.TIMESTAMP:
++        if tt == utils.TemporalType.TIMESTAMP or tt == utils.TemporalType.DATETIME:
+             return f"""from_iso8601_timestamp('{dttm.isoformat(timespec="microseconds")}')"""  # pylint: disable=line-too-long
+         return None
+ 
+```
+
+That "works" but does have a side effect. The queries now **include** CURRENT_DATE as 
+```
+SELECT 
+  CURRENT_DATE, 
+  CURRENT_DATE < from_iso8601_timestamp('2021-11-02T22:16:38.000000')
+```
+Returns: 
+```
+2021-11-02
+true
+```
+
+So that's quite a breaking change as all existing dashboards are built with the assumption that today is excluded. 
+
+
+COMMENT_INFO
+stale[bot]
+2021-10-18T12:37:39Z
+BEGIN_COMMENT
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions. For admin, please label this issue `.pinned` to prevent stale bot from closing the issue.
+

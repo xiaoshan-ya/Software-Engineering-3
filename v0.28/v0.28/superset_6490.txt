@@ -1,0 +1,46 @@
+ISSUE_INFO
+superset
+v0.28
+6490
+squalou
+2018-12-05T07:31:12Z
+2019-04-17T12:40:56Z
+not_pull_request
+inactive,change:backend,v0.28,
+BEGIN_ISSUE
+Hi,
+
+I'm using superset against a MySQL databases, where data are stored in UTC (which is fine).
+Clients connections to these databases all have the parameter ?serverTimeZone=XX/YY
+
+I didn't find the equivalent in superset. 
+
+When I tried to add the parameter in SqlAlchemy URI, it told me 'serverTimeZone is an invalid keyword argument'
+
+I've seen #703 which is related but apparently for Druid.
+
+
+### Superset version
+
+0.28.1
+
+### Expected results
+
+in SQL Editor, run this query against a mysql database is a different timezone :
+
+select now();
+
+get local time as result
+
+### Actual results
+
+UTC time is returned
+
+
+
+COMMENT_INFO
+stale[bot]
+2018-12-05T07:31:12Z
+BEGIN_COMMENT
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.
+

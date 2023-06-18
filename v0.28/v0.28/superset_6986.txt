@@ -1,0 +1,304 @@
+ISSUE_INFO
+superset
+v0.28
+6986
+mmuru
+2019-03-06T17:20:35Z
+2019-06-08T18:26:08Z
+not_pull_request
+inactive,v0.28,
+BEGIN_ISSUE
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+Make sure these boxes are checked before submitting your issue - thank you!
+
+- [ x ] I have checked the superset logs for python stacktraces and included it here as text if there are any.
+- [ ] I have reproduced the issue with at least the latest released version of superset.
+- [x ] I have checked the issue tracker for the same issue and I haven't found one similar.
+
+
+### Superset version
+0.28.1 
+
+### Expected results
+Should able to visualize 
+
+### Actual results
+blank page
+in Log file:
+2019-03-06 17:13:09,123:ERROR:root:'__timestamp'
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/superset/views/core.py", line 1149, in generate_json
+    payload = viz_obj.get_payload()
+  File "/usr/local/lib/python3.6/site-packages/superset/viz.py", line 371, in get_payload
+    payload['data'] = self.get_data(df)
+  File "/usr/local/lib/python3.6/site-packages/superset/viz.py", line 1212, in get_data
+    df = self.process_data(df)
+  File "/usr/local/lib/python3.6/site-packages/superset/viz.py", line 1132, in process_data
+    values=self.metric_labels)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/frame.py", line 5303, in pivot_table
+    margins_name=margins_name)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/reshape/pivot.py", line 86, in pivot_table
+    grouped = data.groupby(keys, observed=False)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/generic.py", line 6665, in groupby
+    observed=observed, **kwargs)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/groupby/groupby.py", line 2152, in groupby
+    return klass(obj, by, **kwds)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/groupby/groupby.py", line 599, in __init__
+    mutated=self.mutated)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/groupby/groupby.py", line 3291, in _get_grouper
+    raise KeyError(gpr)
+KeyError: '__timestamp'
+
+### Steps to reproduce
+Time series line chart was used to work and able to visualize the data. With released version, none of time series line char works. The database is Snowflake. It always throws the following 
+2019-03-06 17:13:09,123:ERROR:root:'__timestamp'
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/superset/views/core.py", line 1149, in generate_json
+    payload = viz_obj.get_payload()
+  File "/usr/local/lib/python3.6/site-packages/superset/viz.py", line 371, in get_payload
+    payload['data'] = self.get_data(df)
+  File "/usr/local/lib/python3.6/site-packages/superset/viz.py", line 1212, in get_data
+    df = self.process_data(df)
+  File "/usr/local/lib/python3.6/site-packages/superset/viz.py", line 1132, in process_data
+    values=self.metric_labels)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/frame.py", line 5303, in pivot_table
+    margins_name=margins_name)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/reshape/pivot.py", line 86, in pivot_table
+    grouped = data.groupby(keys, observed=False)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/generic.py", line 6665, in groupby
+    observed=observed, **kwargs)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/groupby/groupby.py", line 2152, in groupby
+    return klass(obj, by, **kwds)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/groupby/groupby.py", line 599, in __init__
+    mutated=self.mutated)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/groupby/groupby.py", line 3291, in _get_grouper
+    raise KeyError(gpr)
+KeyError: '__timestamp'
+ 
+
+
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+This has been fixed quite a while ago, the 0.31 release candidate works well with Snowflake.
+COMMENT_INFO
+mmuru
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+@villebro: Thanks. Please, can you let me know the PR for this fix? 
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+@mmuru The main fix was #5827 which is in the 0.31 RC.
+COMMENT_INFO
+yuguang
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+@villebro I tried out 0.31 RC It still has the same `__timestamp` bug when using Snowflake with Time-series bar charts. This is the detailed error report:
+```
+Traceback (most recent call last):
+  File "/home/superset/superset/views/base.py", line 114, in wraps
+    return f(self, *args, **kwargs)
+  File "/home/superset/superset/views/core.py", line 1229, in explore_json
+    samples=samples,
+  File "/home/superset/superset/views/core.py", line 1160, in generate_json
+    payload = viz_obj.get_payload()
+  File "/home/superset/superset/viz.py", line 375, in get_payload
+    payload['data'] = self.get_data(df)
+  File "/home/superset/superset/viz.py", line 1223, in get_data
+    df = self.process_data(df)
+  File "/home/superset/superset/viz.py", line 1143, in process_data
+    values=self.metric_labels)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/frame.py", line 5303, in pivot_table
+    margins_name=margins_name)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/reshape/pivot.py", line 86, in pivot_table
+    grouped = data.groupby(keys, observed=False)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/generic.py", line 6665, in groupby
+    observed=observed, **kwargs)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/groupby/groupby.py", line 2152, in groupby
+    return klass(obj, by, **kwds)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/groupby/groupby.py", line 599, in __init__
+    mutated=self.mutated)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/groupby/groupby.py", line 3291, in _get_grouper
+    raise KeyError(gpr)
+KeyError: '__timestamp'
+```
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+That's very strange, I will check what's going on. @mmuru were you able to get Snowflake timeseries working on 0.31 RC?
+COMMENT_INFO
+mmuru
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+@villebro: I tested it with master and worked as expected. I did not test against 0.31 RC branch.
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+Thanks for the help @mmuru. @yuguang, I was unable to reproduce the error on `release--0.31` branch; tested Time Series Bar Chart, Line Chart and Area Chart and all worked fine both with and without timegrains.
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+@yuguang do check that you're on a fresh version of `snowflake-sqlalchemy`. There was a regression in `1.1.2` I believe that was fixed around `1.1.4`(I think) which messed with forced quoting, and would produce a similar error.
+COMMENT_INFO
+yuguang
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+@villebro I am on snowflake-sqlalchemy==1.1.11. I will try to reproduce the bug again on 0.31 RC and check the version there. 
+COMMENT_INFO
+yuguang
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+The dataframe being returned from the queries had uppercase column names, `__TIMESTAMP` was one of them. I was able to fix the 0.31 RC code by checking for the uppercase column name. 
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+Can you check if the __timestamp alias has quotes around it on the query? If not then I can't really think of any other explanation than the superset installation not being 0.31 or something being wrong with the snowflake-sqlalchemy version.
+COMMENT_INFO
+yuguang
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+@villebro The query does have quotes around __timestamp. I made a screen recording which shows the error and also the snowflake-sqlalchemy version:
+
+![Peek 2019-03-27 12-53](https://user-images.githubusercontent.com/907925/55110558-8304f480-5095-11e9-9a33-452450c389d6.gif)
+
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+Hmm, very strange indeed. Make sure you have updated versions of all libraries, especially snowflake-connector-python. Also copy the query from Superset and run it via the Snowflake web UI to check what case is returned for the __timestamp column. Quotes around the alias should ensure that the result has case sensitive headers: https://community.snowflake.com/s/article/faq-when-i-retrieve-database-schema-table-or-column-names-why-does-snowflake-display-them-in-uppercase 
+COMMENT_INFO
+yuguang
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+I have the latest libraries, snowflake-connector-python-1.7.9 and snowflake-sqlalchemy-1.1.11. When I run the query in the Snowflake web UI, it returns the columns in all caps. `__TIMESTAMP` is one of them. I have a fix for this, so I will make a pull request for 0.31. The bug was not reproducible on master. 
+
+
+The query generated is
+```
+SELECT DATE_TRUNC('DAY', CHECK_IN_TIME) AS "__timestamp",
+       COUNT(DISTINCT "INSTANCE3") AS "COUNT_DISTINCT(INSTANCE3)"
+FROM
+  (SELECT *
+   FROM emory.public.raw_er) AS expr_qry
+WHERE "CHECK_IN_TIME" >= '1919-03-27 00:00:00'
+GROUP BY DATE_TRUNC('DAY', CHECK_IN_TIME)
+ORDER BY "COUNT_DISTINCT(INSTANCE3)" DESC
+LIMIT 1000;
+```
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+I did a quick search, it seems your account has been set to ignore case sensitive column names even if they are quoted:
+- https://docs.snowflake.net/manuals/sql-reference/identifiers-syntax.html#label-identifier-casing
+- https://docs.snowflake.net/manuals/sql-reference/parameters.html#label-quoted-identifiers-ignore-case
+
+While this isn't perhaps something that I would recommend doing, there are a few ways around this, but the universal solution would be to just force labels to `UPPERCASE` similarly to how Redshift forces everything to `lowercase`. This doesn't affect the user experience in Superset in any way (metrics etc will still support `MixedCase`), only slightly changes how the query is rendered.
+COMMENT_INFO
+yuguang
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+Thanks! You mean that setting `QUOTED_IDENTIFIERS_IGNORE_CASE` to False is the recommended solution?
+COMMENT_INFO
+yuguang
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+Since other people also reported this bug with `__timestamp`, can I add a blue note box in [the documentation for Snowflake](https://superset.incubator.apache.org/installation.html#snowflake) about this?
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+Did changing the parameter work? I think there are two options:
+1. Add a note to the documentation that `QUOTED_IDENTIFIERS_IGNORE_CASE` needs to be set to False. This is what I believe the majority of users are doing anyway.
+2. Change the spec for Snowflake to always uppercase column labels.
+
+I'm kind of leaning towards the second option, as it makes Snowflake "just work" out of the box in both cases, has no adverse effects (other than making the labels in queries look VERY_LOUD), and makes it easier to get Superset working with minimal additional configuration. Thoughts?
+COMMENT_INFO
+yuguang
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+If option 2 is implemented, would the chart building UI be showing all upper case columns?
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+No, beyond what is seen in the query window everything remains unchanged. Were you able to change the parameter value and solve your immediate problem?
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+@yuguang btw, if you don't want to change the settings in your SF account you can disable the setting for your Superset session by adding the following in the Extra field in your database settings:
+```js
+"engine_params": {"connect_args": {"session_parameters": {"QUOTED_IDENTIFIERS_IGNORE_CASE": false}}}
+```
+
+COMMENT_INFO
+yuguang
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+The code change I made in the pull request fixed the issue for us. I would rather not set the session parameters for 16 different Snowflake databases
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+Ok. I think you will run into the same problem using at least the `NVD3DualLineViz` and `PairedTTestViz` visualizations, as they also perform a pivot using `DTTM_ALIAS`. A slightly more generic solution (in addition to my proposal above) would be to add the following method to `SnowflakeEngineSpec` in `db_engine_specs.py`:
+```python
+    @staticmethod
+    def mutate_label(label):
+        return label.upper()
+```
+This should solve all symptoms of using `QUOTED_IDENTIFIERS_IGNORE_CASE=True`. As stated, the above is no longer necessary in forthcoming versions after `0.31`, so it doesn't make sense to merge it to master, but might make your installation work better.
+COMMENT_INFO
+yuguang
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+Thanks. Do you want to make a pull request for 0.31, since you are more familiar with the code?
+COMMENT_INFO
+villebro
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+Given that the need for this change is the result of having explicitly disabled regular quoting functionality on account/user/session level, and can be re-enabled in Superset by adjusting `engine_params`, I'm not sure this needs to go into the 0.31 branch. But if there is a more general need for this I can certainly make a PR for it.
+COMMENT_INFO
+mmuru
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+I think, it should rebase with master to get latest since this ain't an issue anymore in master. 
+
+> On Apr 2, 2019, at 6:39 AM, Ville Brofeldt <notifications@github.com> wrote:
+> 
+> Given that the need for this change is the result of having explicitly disabled regular quoting functionality on account/user/session level, and can be re-enabled in Superset by adjusting engine_params, I'm not sure this needs to go into the 0.31 branch. But if there is a more general need for this I can certainly make a PR for it.
+> 
+> —
+> You are receiving this because you were mentioned.
+> Reply to this email directly, view it on GitHub, or mute the thread.
+
+COMMENT_INFO
+stale[bot]
+2019-03-06T17:20:35Z
+BEGIN_COMMENT
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions. For admin, please label this issue `.pinned` to prevent stale bot from closing the issue.
+

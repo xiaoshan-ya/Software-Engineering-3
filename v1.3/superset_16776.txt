@@ -1,0 +1,129 @@
+ISSUE_INFO
+superset
+v1.3
+16776
+villebro
+2021-09-22T04:15:42Z
+2021-09-22T07:13:49Z
+pull_request
+size/XS,preset-io,v1.3,
+BEGIN_ISSUE
+### SUMMARY
+When syncing dataset metadata, the `is_dttm` flag is reset for columns that are not natively temporal (like `VARCHAR` that has a datetime format). This changes the logic so that `is_dttm` is only reset if it is unset and the new datatype would be natively identified as being temporal.
+
+Closes #16774
+
+### AFTER
+
+https://user-images.githubusercontent.com/33317356/134282249-6c83c718-5c2a-4856-8ed0-32dd2d2c2334.mp4
+
+### BEFORE
+
+https://user-images.githubusercontent.com/33317356/134282263-809bc38e-583a-490a-a371-fd8a495ee26c.mp4
+
+
+### TESTING INSTRUCTIONS
+<!--- Required! What steps can be taken to manually verify the changes? -->
+
+### ADDITIONAL INFORMATION
+<!--- Check any relevant boxes with "x" -->
+<!--- HINT: Include "Fixes #nnn" if you are fixing an existing issue -->
+- [ ] Has associated issue:
+- [ ] Required feature flags:
+- [ ] Changes UI
+- [ ] Includes DB Migration (follow approval process in [SIP-59](https://github.com/apache/superset/issues/13351))
+  - [ ] Migration is atomic, supports rollback & is backwards-compatible
+  - [ ] Confirm DB migration upgrade and downgrade tested
+  - [ ] Runtime estimates and downtime expectations provided
+- [ ] Introduces new feature or API
+- [ ] Removes existing feature or API
+
+COMMENT_INFO
+villebro
+2021-09-22T04:15:42Z
+BEGIN_COMMENT
+> LGTM. Thanks for the quick fix!
+> 
+> For the case when the original temporal flag was inferred from db type instead of user selection, this change seems will also retain the flag, but maybe that's OK?
+
+Yeah, I didn't think that would be a common need, but I'm open to changing that, too, if this is a typical scenario. Do you think it's common to want to disable temporal flags for temporal type columns?
+
+
+COMMENT_INFO
+codecov[bot]
+2021-09-22T04:15:42Z
+BEGIN_COMMENT
+# [Codecov](https://codecov.io/gh/apache/superset/pull/16776?src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) Report
+> Merging [#16776](https://codecov.io/gh/apache/superset/pull/16776?src=pr&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) (43e33b5) into [master](https://codecov.io/gh/apache/superset/commit/a74352644ecc1f377c88f68d10685573ff8e064a?el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) (a743526) will **increase** coverage by `0.00%`.
+> The diff coverage is `100.00%`.
+
+> :exclamation: Current head 43e33b5 differs from pull request most recent head a6cc029. Consider uploading reports for the commit a6cc029 to get more accurate results
+[![Impacted file tree graph](https://codecov.io/gh/apache/superset/pull/16776/graphs/tree.svg?width=650&height=150&src=pr&token=KsB0fHcx6l&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)](https://codecov.io/gh/apache/superset/pull/16776?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)
+
+```diff
+@@           Coverage Diff           @@
+##           master   #16776   +/-   ##
+=======================================
+  Coverage   76.98%   76.98%           
+=======================================
+  Files        1007     1007           
+  Lines       54186    54187    +1     
+  Branches     7464     7465    +1     
+=======================================
++ Hits        41713    41714    +1     
+  Misses      12233    12233           
+  Partials      240      240           
+```
+
+| Flag | Coverage Δ | |
+|---|---|---|
+| javascript | `71.29% <100.00%> (+<0.01%)` | :arrow_up: |
+
+Flags with carried forward coverage won't be shown. [Click here](https://docs.codecov.io/docs/carryforward-flags?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#carryforward-flags-in-the-pull-request-comment) to find out more.
+
+| [Impacted Files](https://codecov.io/gh/apache/superset/pull/16776?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) | Coverage Δ | |
+|---|---|---|
+| [...erset-frontend/src/datasource/DatasourceEditor.jsx](https://codecov.io/gh/apache/superset/pull/16776/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2RhdGFzb3VyY2UvRGF0YXNvdXJjZUVkaXRvci5qc3g=) | `74.90% <100.00%> (+0.09%)` | :arrow_up: |
+
+------
+
+[Continue to review full report at Codecov](https://codecov.io/gh/apache/superset/pull/16776?src=pr&el=continue&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation).
+> **Legend** - [Click here to learn more](https://docs.codecov.io/docs/codecov-delta?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)
+> `Δ = absolute <relative> (impact)`, `ø = not affected`, `? = missing data`
+> Powered by [Codecov](https://codecov.io/gh/apache/superset/pull/16776?src=pr&el=footer&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation). Last update [a743526...a6cc029](https://codecov.io/gh/apache/superset/pull/16776?src=pr&el=lastupdated&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation). Read the [comment docs](https://docs.codecov.io/docs/pull-request-comments?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation).
+
+COMMENT_INFO
+villebro
+2021-09-22T04:15:42Z
+BEGIN_COMMENT
+Merging this as-is, we can do a follow-up PR if we want to further refine this behavior.
+COMMENT_INFO
+ktmud
+2021-09-22T04:15:42Z
+BEGIN_COMMENT
+> > LGTM. Thanks for the quick fix!
+> 
+> > 
+> 
+> > For the case when the original temporal flag was inferred from db type instead of user selection, this change seems will also retain the flag, but maybe that's OK?
+> 
+> 
+> 
+> Yeah, I didn't think that would be a common need, but I'm open to changing that, too, if this is a typical scenario. Do you think it's common to want to disable temporal flags for temporal type columns?
+> 
+> 
+> 
+> 
+
+I was more thinking of when some column changed from a datetime type to non datetime, the previously inferred is_dttm will be retained. But like I said, I think this case is also OK. It's much more likely to want to force a non-dttm to dttm than vice versa.
+COMMENT_INFO
+villebro
+2021-09-22T04:15:42Z
+BEGIN_COMMENT
+> I was more thinking of when some column changed from a datetime type to non datetime, the previously inferred is_dttm will be retained. But like I said, I think this case is also OK. It's much more likely to want to force a non-dttm to dttm than vice versa.
+
+CI seems to be so flaky we still have some time to iterate.. :D 
+
+I wonder if this would be the best flow: If the column exists and the raw datatype has changed, reinfer `is_dttm`. Therefore, if the raw datatype is unchanged, `is_dttm` is also unchanged.
+
+This would have the drawback of disabling `is_dttm` when `VARCHAR(10)` is changed to `VARCHAR(11)` or `TEXT` or some other non-temporal type, but I assume this is fairly uncommon.

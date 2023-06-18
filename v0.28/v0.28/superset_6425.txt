@@ -1,0 +1,130 @@
+ISSUE_INFO
+superset
+v0.28
+6425
+bahadircolak44
+2018-11-22T15:18:19Z
+2019-02-13T12:50:50Z
+not_pull_request
+v0.28,
+BEGIN_ISSUE
+Make sure these boxes are checked before submitting your issue - thank you!
+
+- [ ] I have checked the superset logs for python stacktraces and included it here as text if there are any.
+- [ ] I have reproduced the issue with at least the latest released version of superset.
+- [x] I have checked the issue tracker for the same issue and I haven't found one similar.
+
+
+### Superset version
+0.28
+
+### Expected results
+To monitor clickhouse data
+
+### Actual results
+Loaded your LOCAL configuration at [/home/work/incubator-superset/superset/superset_config.py]
+2018-11-22 15:02:41,147:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+2018-11-22 15:02:41,149:ERROR:flask_appbuilder.security.sqla.manager:DB Creation and initialization failed: HTTPConnectionPool(host='localhost', port=8123): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f118e10b470>: Failed to establish a new connection: [Errno 111] Connection refused',))
+
+
+### Steps to reproduce
+I am running superset with docker. 
+I did all steps:
+`bash -x docker-build.sh`
+`docker-compose up -d`
+`docker-compose exec superset bash`
+`bash docker-init.sh`
+
+I change superset_config.py like SQLALCHEMY_DATABASE_URI = "clickhouse://localhost:8123"
+
+I don't know If I am missing something. Can you please help me to connect to clickhouse. Should I need to add/change/delete something else in config or somewhere else? My clickhouse server is running without problem and I can monitor data with other UI but I want to use superset. I am missing some config most probably. 
+
+Thank you. 
+
+COMMENT_INFO
+kaitorecca
+2018-11-22T15:18:19Z
+BEGIN_COMMENT
+make sure you can make connection (by curl or wget) to clickhouse server. Furthermore, you need to install clickhouse orm on this. Check the docker in docker hub for reference
+COMMENT_INFO
+61361
+2018-11-22T15:18:19Z
+BEGIN_COMMENT
+Ok
+
+On Nov 25, 2018 11:19 PM, "kaitorecca" <notifications@github.com> wrote:
+
+make sure you can make connection (by curl or wget) to clickhouse server.
+Furthermore, you need to install clickhouse orm on this. Check the docker
+in docker hub for reference
+
+—
+You are receiving this because you are subscribed to this thread.
+Reply to this email directly, view it on GitHub
+<https://github.com/apache/incubator-superset/issues/6425#issuecomment-441530347>,
+or mute the thread
+<https://github.com/notifications/unsubscribe-auth/AqbE1caHRUwSAdJ24O5IlF144yDUExY1ks5uy4fsgaJpZM4YviS5>
+.
+
+COMMENT_INFO
+bahadircolak44
+2018-11-22T15:18:19Z
+BEGIN_COMMENT
+Actually I solved it, but now I have this
+
+> 2018-11-26 08:15:11,501:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,504:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST / HTTP/1.1" 200 None
+2018-11-26 08:15:11,506:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,508:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,509:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,511:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,514:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,516:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=65131aca-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,519:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,520:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=6513e2a2-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,522:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,524:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=65146cd6-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,527:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,528:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=65151db6-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,531:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,533:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=6515bb68-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,536:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,538:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=65166fc2-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,541:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,542:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=65171b70-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,544:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,546:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=6517c62e-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,548:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,549:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=65184a54-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,551:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,552:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=6518cbd2-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,554:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,555:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=651949a4-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,558:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,559:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=6519ceb0-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 200 None
+2018-11-26 08:15:11,562:DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): some-clickhouse-server
+2018-11-26 08:15:11,601:DEBUG:urllib3.connectionpool:http://some-clickhouse-server:8123 "POST /?query_id=651a7450-f153-11e8-ae24-0242c0a81005&database=default HTTP/1.1" 500 None
+2018-11-26 08:15:11,602:ERROR:flask_appbuilder.security.sqla.manager:DB Creation and initialization failed: Code: 62, e.displayText() = DB::Exception: Syntax error: failed at position 43 (line 3, col 13): NOT NULL, 
+	name VARCHAR(100) NOT NULL, 
+	PRIMARY KEY (id), 
+	UNIQUE (name)
+)
+
+ FORMAT TabSeparatedWithNamesAndTypes. Expected one of: DEFAULT, MATERIALIZED, ALIAS, token, ClosingRoundBracket, Comma, e.what() = DB::Exception
+
+
+COMMENT_INFO
+gh372029002
+2018-11-22T15:18:19Z
+BEGIN_COMMENT
+I have this:
+ERROR: (builtins.NoneType) None
+[SQL: Error HTTPConnectionPool(host='127.0.0.1', port=8123): Max retries exceeded with url: /?wait_end_of_query=1 (Caused by NewConnectionError(': Failed to establish a new connection: [Errno 111] Connection refused')) executing HTTP request http://127.0.0.1:8123]
+(Background on this error at: https://sqlalche.me/e/14/dbapi)
+
+My local code is empty. Here are some ways I can try to use links. Can you help me see what the problem is?
+clickhousedb://default:default@127.0.0.1:8123/default
+clickhousedb://default:default:''@127.0.0.1:8123/default
+clickhousedb://default:default:""@127.0.0.1:8123/default
+clickhousedb://default:default:NULL@127.0.0.1:8123/default
+

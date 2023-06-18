@@ -1,0 +1,48 @@
+ISSUE_INFO
+superset
+v1.3
+15420
+amitmiran137
+2021-06-28T09:56:08Z
+2021-06-29T17:26:55Z
+not_pull_request
+#bug,v1.3,
+BEGIN_ISSUE
+when hightlighting an active filter on the second tab in a multitab dashboard 
+
+### Expected results
+
+focus should remain in the active tab and highlight the charts in that tab
+
+### Actual results
+ 
+focus moved to the first tab and highlight there
+
+#### Screenshots
+
+https://user-images.githubusercontent.com/47772523/123616835-58271f00-d80f-11eb-985c-e9ffa68d4c26.mov
+
+
+
+#### How to reproduce the bug
+
+### Environment
+
+(please complete the following information):
+
+- superset version: `master`
+- python version: `python --version`
+- node.js version: `node -v`
+
+### Checklist
+
+Make sure to follow these steps before submitting your issue - thank you!
+
+- [x ] I have checked the superset logs for python stacktraces and included it here as text if there are any.
+- [ x] I have reproduced the issue with at least the latest released version of superset.
+- [ x] I have checked the issue tracker for the same issue and I haven't found one similar.
+
+### Additional context
+
+Add any other context about the problem here.
+

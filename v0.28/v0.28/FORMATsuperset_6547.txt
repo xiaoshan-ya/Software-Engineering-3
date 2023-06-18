@@ -1,0 +1,1 @@
+This fixes an issues recently reported by many users. It's simple, but I wanted to ensure it got in to help everyone out. 

@@ -1,0 +1,22 @@
+Class,UC-1 Assigning Sentiment Scores for Words,UC-2 Assigning Sentiment Scores for Phrases,UC-3 Spelling Correction,UC-4 Booster Word Rule,UC-5 Negating Word Rule,UC-6 Repeated Letter Rule,UC-7 Emoji Rule,UC-8 Exclamation Mark Rule,UC-9 Repeated Punctuation Rule,UC-10 Negative Sentiment Ignored in Questions,UC-11 Classify a single text,UC-12 Classify all lines of text in a file for sentiment [includes accuracy evaluations],UC-13 Classify texts in a column within a file or folder,UC-14 Listen at a port for texts to classify,UC-15 Run interactively from the command line,UC-16 Process stdin and send to stdout,UC-17 Location of linguistic data folder,UC-18 Location of sentiment term weights,UC-19 Location of output folder,UC-20 File name extension for output,UC-21 Classify positive (1 to 5) and negative (-1 to -5) sentiment strength separately,UC-22 Use trinary classification (positive-negative-neutral),UC-23 Use binary classification (positive-negative),UC-24 Use a single positive-negative scale classification,UC-25 Explain the classification,UC-26 Set Classification Algorithm Parameters,UC-27 Optimise sentiment strengths of existing sentiment terms,UC-28 Suggest new sentiment terms (from terms in misclassified texts),UC-29 Machine learning evaluations
+sentistrength.SentiStrength,,,,,,,,,,,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X
+sentistrength.Test,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+sentistrength.ClassificationOptions ,,,,,,,,,,,,,,,,,,,,,,,,,,X,,,
+sentistrength.TextParsingOptions,,,,,,,,,,,X,,,,,,,,,,,,,,,,,,
+sentistrength.ClassificationResources,X,X,X,X,X,,,,,,X,X,X,,,,X,X,,,,,,,X,X,,,
+sentistrength.ClassificationStatistics,X,X,,X,X,,,,,,,X,X,,,,,,,,,X,X,,,,X,,X
+sentistrength.BoosterWordsList,X,,,X,,,,,,,,,,,,,,,,,,,,,,,,,
+sentistrength.CorrectSpellingsList,,,X,,,,,,,,,,,,,,,,,,,,,,,,,,
+sentistrength.EmoticonsList,X,,,,,,X,,,,,,,,,,,,,,,,,,,,,,
+sentistrength.EvaluativeTerms,X,,,,,,,,,,,,,,,,,,,,,,,,,,X,X,
+sentistrength.IdiomList,X,X,,,,,,,,,,,,,,,,,,,,,,,,,,,
+sentistrength.IronyList,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+sentistrength.NegatingWordList,,,,,X,,,,,,,,,,,,,,,,,,,,,,,,
+sentistrength.SentimentWords,X,X,,,,X,X,,,,X,,,,,,,,,,,,,,,,X,,
+sentistrength.QuestionWords,,,,,,,,,,X,X,,,,,,,,,,,,,,,,,,
+sentistrength.Lemmatiser,X,,X,,,,,,,,,,,,,,,,,,,,,,,,,,
+sentistrength.UnusedTermsClassificationIndex,,,,,,,,,,,X,X,,,,,X,,X,X,X,X,,,,,,,
+sentistrength.Corpus,X,X,,,,,,,,,,X,,,,X,,,,X,,,X,X,,X,X,X,X
+sentistrength.Paragraph,X,,,,,,,X,,X,X,,,,,,,,,,X,X,X,X,X,X,X,,
+sentistrength.Sentence,X,X,,X,X,X,,,X,,X,,,,,,,,,,,,,X,,,,,
+sentistrength.Term,X,,X,X,X,X,X,,,,X,,,,,,,,,,,,,,,,,,

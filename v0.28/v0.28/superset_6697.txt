@@ -1,0 +1,94 @@
+ISSUE_INFO
+superset
+v0.28
+6697
+sj-plenty
+2019-01-15T23:14:26Z
+2019-04-17T10:39:55Z
+not_pull_request
+!deprecated-label:bug,inactive,v0.28,
+BEGIN_ISSUE
+Make sure these boxes are checked before submitting your issue - thank you!
+
+- [X ] I have checked the superset logs for python stacktraces and included it here as text if there are any.
+- [X ] I have reproduced the issue with at least the latest released version of superset.
+- [ X] I have checked the issue tracker for the same issue and I haven't found one similar.
+
+
+### Superset version
+0.28.1
+
+### Expected results
+SQLLab returns the result of the command `describe temperature;`
+
+### Actual results
+Errors with `3 columns passed, passed data had 1 columns`, and table schemas fail to load.
+
+```
+2019-01-15 22:07:56,693:INFO:root:Fetching cursor description
+2019-01-15 22:07:56,693:ERROR:root:3 columns passed, passed data had 1 columns
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/superset/sql_lab.py", line 89, in get_sql_results
+    session=session, start_time=start_time)
+  File "/usr/local/lib/python3.6/site-packages/superset/sql_lab.py", line 216, in execute_sql
+    cdf = dataframe.SupersetDataFrame(data, cursor_description, db_engine_spec)
+  File "/usr/local/lib/python3.6/site-packages/superset/dataframe.py", line 74, in __init__
+    pd.DataFrame(list(data), columns=self.column_names).infer_objects())
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/frame.py", line 387, in __init__
+    arrays, columns = _to_arrays(data, columns, dtype=dtype)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/frame.py", line 7461, in _to_arrays
+    dtype=dtype)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/frame.py", line 7540, in _list_to_arrays
+    coerce_float=coerce_float)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/frame.py", line 7598, in _convert_object_array
+    con=len(content)))
+AssertionError: 3 columns passed, passed data had 1 columns
+2019-01-15 22:07:56,694:DEBUG:root:[36m[stats_logger] (incr) error_sqllab_unhandled[0m
+2019-01-15 22:07:56,706:ERROR:root:3 columns passed, passed data had 1 columns
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/superset/sql_lab.py", line 69, in session_scope
+    yield session
+  File "/usr/local/lib/python3.6/site-packages/superset/sql_lab.py", line 89, in get_sql_results
+    session=session, start_time=start_time)
+  File "/usr/local/lib/python3.6/site-packages/superset/sql_lab.py", line 216, in execute_sql
+    cdf = dataframe.SupersetDataFrame(data, cursor_description, db_engine_spec)
+  File "/usr/local/lib/python3.6/site-packages/superset/dataframe.py", line 74, in __init__
+    pd.DataFrame(list(data), columns=self.column_names).infer_objects())
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/frame.py", line 387, in __init__
+    arrays, columns = _to_arrays(data, columns, dtype=dtype)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/frame.py", line 7461, in _to_arrays
+    dtype=dtype)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/frame.py", line 7540, in _list_to_arrays
+    coerce_float=coerce_float)
+  File "/usr/local/lib/python3.6/site-packages/pandas/core/frame.py", line 7598, in _convert_object_array
+    con=len(content)))
+```
+
+
+### Steps to reproduce
+Set up awsathena+rest data source.
+Go to sql lab
+`describe table`
+
+
+COMMENT_INFO
+sj-plenty
+2019-01-15T23:14:26Z
+BEGIN_COMMENT
+May be related to similar issue I am getting where clicking an option under "See Table Schema" yields the error: `Error occurred while fetching table metadata`. Upon following the path being called (/superset/table/2/temperature/default/) the error is `{"error": "'Engine' object has no attribute 'connection'"}`. Can't seem to find any stack trace.
+COMMENT_INFO
+sj-plenty
+2019-01-15T23:14:26Z
+BEGIN_COMMENT
+Switched to use PyAthenaJDBC and it works. So this might be more of a PyAthena issue, or an integration issue. 
+COMMENT_INFO
+stale[bot]
+2019-01-15T23:14:26Z
+BEGIN_COMMENT
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.
+
+COMMENT_INFO
+bryzgaloff
+2019-01-15T23:14:26Z
+BEGIN_COMMENT
+Check PyAthena version. [Superset docs](https://superset.apache.org/docs/databases/installing-database-drivers) tell `PyAthena>1.2.0` while [PyAthena PyPI page](https://pypi.org/project/pyathena/2.5.1/) says `PyAthena[SQLAlchemy]>=1.0.0, <2.0.0`. In my case `PyAthena[SQLAlchemy]>1.2.0, <2.0.0` (combining both constraints) solved an issue and the tables were present in dropdown list in SQL Lab (it was empty with `PyAthena==2.5.1` (latest) version before).

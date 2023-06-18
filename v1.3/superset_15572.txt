@@ -1,0 +1,192 @@
+ISSUE_INFO
+superset
+v1.3
+15572
+simcha90
+2021-07-07T15:06:33Z
+2021-07-12T11:55:12Z
+pull_request
+size/L,dashboard:native-filters,#bug:blocking!,v1.3,
+BEGIN_ISSUE
+### SUMMARY
+<!--- Describe the change below, including rationale and design decisions -->
+This PR fix CR notes for native filters from here: https://github.com/apache/superset/pull/15506#issuecomment-875420917
+
+1. Remove error message in required filters in filter bar
+2. Fix bug when reopens FiltersConfigModal with existed value it's not marked as checked
+
+
+https://user-images.githubusercontent.com/56388545/124783840-076d9f80-df4e-11eb-90c5-f49bfb9e19aa.mov
+
+
+
+3. On the way fix Range filter that doesn't apply default value in next flow:
+a. Create Select Filter
+b. Switch it's type to Range Filter
+
+4. Removes reset form functionality because of 2 reasons:
+a. When form saved or closed now it destroys Ant form, so no need reset it
+b. It applies reset before form closed, and it can mess some form fields before it closed
+
+### BEFORE/AFTER SCREENSHOTS OR ANIMATED GIF
+<!--- Skip this if not applicable -->
+
+### TESTING INSTRUCTIONS
+<!--- Required! What steps can be taken to manually verify the changes? -->
+
+### ADDITIONAL INFORMATION
+<!--- Check any relevant boxes with "x" -->
+<!--- HINT: Include "Fixes #nnn" if you are fixing an existing issue -->
+- [ ] Has associated issue:
+- [ ] Changes UI
+- [ ] Includes DB Migration (follow approval process in [SIP-59](https://github.com/apache/superset/issues/13351))
+  - [ ] Migration is atomic, supports rollback & is backwards-compatible
+  - [ ] Confirm DB migration upgrade and downgrade tested
+  - [ ] Runtime estimates and downtime expectations provided
+- [ ] Introduces new feature or API
+- [ ] Removes existing feature or API
+
+COMMENT_INFO
+codecov[bot]
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+# [Codecov](https://codecov.io/gh/apache/superset/pull/15572?src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) Report
+> Merging [#15572](https://codecov.io/gh/apache/superset/pull/15572?src=pr&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) (f421caf) into [master](https://codecov.io/gh/apache/superset/commit/83be06d2ccdd9b8d6200d95e383f5cd847166e3a?el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) (83be06d) will **decrease** coverage by `0.01%`.
+> The diff coverage is `56.41%`.
+
+[![Impacted file tree graph](https://codecov.io/gh/apache/superset/pull/15572/graphs/tree.svg?width=650&height=150&src=pr&token=KsB0fHcx6l&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)](https://codecov.io/gh/apache/superset/pull/15572?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)
+
+```diff
+@@            Coverage Diff             @@
+##           master   #15572      +/-   ##
+==========================================
+- Coverage   76.95%   76.93%   -0.02%     
+==========================================
+  Files         976      976              
+  Lines       51290    51309      +19     
+  Branches     6907     6920      +13     
+==========================================
++ Hits        39468    39474       +6     
+- Misses      11603    11612       +9     
+- Partials      219      223       +4     
+```
+
+| Flag | Coverage Δ | |
+|---|---|---|
+| javascript | `71.38% <56.41%> (-0.04%)` | :arrow_down: |
+
+Flags with carried forward coverage won't be shown. [Click here](https://docs.codecov.io/docs/carryforward-flags?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#carryforward-flags-in-the-pull-request-comment) to find out more.
+
+| [Impacted Files](https://codecov.io/gh/apache/superset/pull/15572?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) | Coverage Δ | |
+|---|---|---|
+| [...tersConfigModal/FiltersConfigForm/DefaultValue.tsx](https://codecov.io/gh/apache/superset/pull/15572/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9jb21wb25lbnRzL25hdGl2ZUZpbHRlcnMvRmlsdGVyc0NvbmZpZ01vZGFsL0ZpbHRlcnNDb25maWdGb3JtL0RlZmF1bHRWYWx1ZS50c3g=) | `20.83% <0.00%> (ø)` | |
+| [...eFilters/FiltersConfigModal/FiltersConfigModal.tsx](https://codecov.io/gh/apache/superset/pull/15572/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9jb21wb25lbnRzL25hdGl2ZUZpbHRlcnMvRmlsdGVyc0NvbmZpZ01vZGFsL0ZpbHRlcnNDb25maWdNb2RhbC50c3g=) | `94.87% <ø> (-0.43%)` | :arrow_down: |
+| [...mponents/nativeFilters/FiltersConfigModal/utils.ts](https://codecov.io/gh/apache/superset/pull/15572/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9jb21wb25lbnRzL25hdGl2ZUZpbHRlcnMvRmlsdGVyc0NvbmZpZ01vZGFsL3V0aWxzLnRz) | `75.00% <ø> (-0.35%)` | :arrow_down: |
+| [...filters/components/GroupBy/GroupByFilterPlugin.tsx](https://codecov.io/gh/apache/superset/pull/15572/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2ZpbHRlcnMvY29tcG9uZW50cy9Hcm91cEJ5L0dyb3VwQnlGaWx0ZXJQbHVnaW4udHN4) | `0.00% <0.00%> (ø)` | |
+| [...s/components/TimeColumn/TimeColumnFilterPlugin.tsx](https://codecov.io/gh/apache/superset/pull/15572/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2ZpbHRlcnMvY29tcG9uZW50cy9UaW1lQ29sdW1uL1RpbWVDb2x1bW5GaWx0ZXJQbHVnaW4udHN4) | `0.00% <0.00%> (ø)` | |
+| [...ers/components/TimeGrain/TimeGrainFilterPlugin.tsx](https://codecov.io/gh/apache/superset/pull/15572/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2ZpbHRlcnMvY29tcG9uZW50cy9UaW1lR3JhaW4vVGltZUdyYWluRmlsdGVyUGx1Z2luLnRzeA==) | `0.00% <0.00%> (ø)` | |
+| [...onfigModal/FiltersConfigForm/FiltersConfigForm.tsx](https://codecov.io/gh/apache/superset/pull/15572/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9jb21wb25lbnRzL25hdGl2ZUZpbHRlcnMvRmlsdGVyc0NvbmZpZ01vZGFsL0ZpbHRlcnNDb25maWdGb3JtL0ZpbHRlcnNDb25maWdGb3JtLnRzeA==) | `73.59% <45.45%> (-0.07%)` | :arrow_down: |
+| [superset-frontend/src/filters/components/common.ts](https://codecov.io/gh/apache/superset/pull/15572/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2ZpbHRlcnMvY29tcG9uZW50cy9jb21tb24udHM=) | `90.00% <50.00%> (-10.00%)` | :arrow_down: |
+| [...d/src/filters/components/Time/TimeFilterPlugin.tsx](https://codecov.io/gh/apache/superset/pull/15572/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2ZpbHRlcnMvY29tcG9uZW50cy9UaW1lL1RpbWVGaWx0ZXJQbHVnaW4udHN4) | `86.66% <60.00%> (-5.65%)` | :arrow_down: |
+| [...c/filters/components/Select/SelectFilterPlugin.tsx](https://codecov.io/gh/apache/superset/pull/15572/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2ZpbHRlcnMvY29tcG9uZW50cy9TZWxlY3QvU2VsZWN0RmlsdGVyUGx1Z2luLnRzeA==) | `79.82% <75.00%> (-0.88%)` | :arrow_down: |
+| ... and [30 more](https://codecov.io/gh/apache/superset/pull/15572/diff?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) | |
+
+------
+
+[Continue to review full report at Codecov](https://codecov.io/gh/apache/superset/pull/15572?src=pr&el=continue&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation).
+> **Legend** - [Click here to learn more](https://docs.codecov.io/docs/codecov-delta?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)
+> `Δ = absolute <relative> (impact)`, `ø = not affected`, `? = missing data`
+> Powered by [Codecov](https://codecov.io/gh/apache/superset/pull/15572?src=pr&el=footer&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation). Last update [83be06d...f421caf](https://codecov.io/gh/apache/superset/pull/15572?src=pr&el=lastupdated&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation). Read the [comment docs](https://docs.codecov.io/docs/pull-request-comments?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation).
+
+COMMENT_INFO
+michael-s-molina
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+/testenv up FEATURE_DASHBOARD_NATIVE_FILTERS=true
+COMMENT_INFO
+github-actions[bot]
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+@michael-s-molina Ephemeral environment spinning up at http://54.201.111.35:8080. Credentials are `admin`/`admin`. Please allow several minutes for bootstrapping and startup.
+COMMENT_INFO
+michael-s-molina
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+Bug 1: Error adding a filter with a default value:
+
+https://user-images.githubusercontent.com/70410625/124803955-20ffee80-df30-11eb-8679-1823e5d2043d.mp4
+
+Bug 2: Time range filter is not being validated on the filter bar:
+
+https://user-images.githubusercontent.com/70410625/124804561-cf0b9880-df30-11eb-9a66-ecdefb094a29.mp4
+
+
+
+
+COMMENT_INFO
+simcha90
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+@michael-s-molina Hi thanks for review, I fixed bugs that you found and pushed fix 👍 
+COMMENT_INFO
+junlincc
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+thanks for addressing our comments @simcha90 really appreciate it! 
+COMMENT_INFO
+michael-s-molina
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+/testenv up FEATURE_DASHBOARD_NATIVE_FILTERS=true
+COMMENT_INFO
+github-actions[bot]
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+@michael-s-molina Ephemeral environment spinning up at http://54.203.224.124:8080. Credentials are `admin`/`admin`. Please allow several minutes for bootstrapping and startup.
+COMMENT_INFO
+michael-s-molina
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+The "Value is required" is still appearing...
+
+https://user-images.githubusercontent.com/70410625/124915291-c0bc8b80-dfc7-11eb-8435-266221f93e94.mp4
+
+
+COMMENT_INFO
+simcha90
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+👍 my miss I will look on this on Sunday, thanks!
+COMMENT_INFO
+michael-s-molina
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+> 👍 my miss I will look at this on Sunday, thanks!
+
+Ok @simcha90. Let me know when it's ready for review.
+COMMENT_INFO
+simcha90
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+@michael-s-molina I fixed, also on the way I fixed some other related bugs when tested this functionality, I updated them in description, thanks
+COMMENT_INFO
+michael-s-molina
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+/testenv up FEATURE_DASHBOARD_NATIVE_FILTERS=true
+COMMENT_INFO
+github-actions[bot]
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+@michael-s-molina Ephemeral environment spinning up at http://34.214.18.187:8080. Credentials are `admin`/`admin`. Please allow several minutes for bootstrapping and startup.
+COMMENT_INFO
+github-actions[bot]
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+Ephemeral environment shutdown and build artifacts deleted.
+COMMENT_INFO
+junlincc
+2021-07-07T15:06:33Z
+BEGIN_COMMENT
+@simcha90 @amitmiran137 really appreciate the quick fix and informing our team for review! 🙏
+cc @adam-stasiak 

@@ -1,0 +1,7 @@
+/.idea/
+/target/
+/社交文本数据.txt
+/SentiStrength.jar
+/src/main/resources/application.yaml
+/文本/
+/checkStyle.bat

@@ -1,0 +1,94 @@
+ISSUE_INFO
+superset
+v1.3
+16412
+robdiciuccio
+2021-08-23T22:09:27Z
+2021-09-03T11:33:30Z
+pull_request
+size/L,preset-io,v1.3,
+BEGIN_ISSUE
+### SUMMARY
+
+Makes Jinja template processing compatible with Global Async Queries and Celery-based processing.
+
+Fixes: https://github.com/apache/superset/issues/14786
+
+### TESTING INSTRUCTIONS
+Test Jinja template functions `url_param` and `filter_values` in Dashboards and Explore via custom SQL templates, with `GLOBAL_ASYNC_QUERIES` feature flag enabled and disabled.
+
+### ADDITIONAL INFORMATION
+<!--- Check any relevant boxes with "x" -->
+<!--- HINT: Include "Fixes #nnn" if you are fixing an existing issue -->
+- [x] Has associated issue: https://github.com/apache/superset/issues/14786
+- [x] Required feature flags: `GLOBAL_ASYNC_QUERIES`
+- [ ] Changes UI
+- [ ] Includes DB Migration (follow approval process in [SIP-59](https://github.com/apache/superset/issues/13351))
+  - [ ] Migration is atomic, supports rollback & is backwards-compatible
+  - [ ] Confirm DB migration upgrade and downgrade tested
+  - [ ] Runtime estimates and downtime expectations provided
+- [ ] Introduces new feature or API
+- [ ] Removes existing feature or API
+
+COMMENT_INFO
+codecov[bot]
+2021-08-23T22:09:27Z
+BEGIN_COMMENT
+# [Codecov](https://codecov.io/gh/apache/superset/pull/16412?src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) Report
+> Merging [#16412](https://codecov.io/gh/apache/superset/pull/16412?src=pr&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) (284aa48) into [master](https://codecov.io/gh/apache/superset/commit/bc4b6f0a6cfb05f0d913a5e4d2dc09844960e04a?el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) (bc4b6f0) will **decrease** coverage by `0.13%`.
+> The diff coverage is `79.72%`.
+
+> :exclamation: Current head 284aa48 differs from pull request most recent head 35e50fe. Consider uploading reports for the commit 35e50fe to get more accurate results
+[![Impacted file tree graph](https://codecov.io/gh/apache/superset/pull/16412/graphs/tree.svg?width=650&height=150&src=pr&token=KsB0fHcx6l&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)](https://codecov.io/gh/apache/superset/pull/16412?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)
+
+```diff
+@@            Coverage Diff             @@
+##           master   #16412      +/-   ##
+==========================================
+- Coverage   76.57%   76.43%   -0.14%     
+==========================================
+  Files        1000     1002       +2     
+  Lines       53489    53698     +209     
+  Branches     6816     6816              
+==========================================
++ Hits        40957    41046      +89     
+- Misses      12296    12416     +120     
+  Partials      236      236              
+```
+
+| Flag | Coverage Δ | |
+|---|---|---|
+| hive | `?` | |
+| mysql | `81.50% <84.21%> (-0.02%)` | :arrow_down: |
+| postgres | `81.57% <84.35%> (+0.02%)` | :arrow_up: |
+| python | `81.62% <84.35%> (-0.30%)` | :arrow_down: |
+| sqlite | `?` | |
+
+Flags with carried forward coverage won't be shown. [Click here](https://docs.codecov.io/docs/carryforward-flags?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#carryforward-flags-in-the-pull-request-comment) to find out more.
+
+| [Impacted Files](https://codecov.io/gh/apache/superset/pull/16412?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) | Coverage Δ | |
+|---|---|---|
+| [...erset-frontend/src/SqlLab/components/ResultSet.tsx](https://codecov.io/gh/apache/superset/pull/16412/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL1NxbExhYi9jb21wb25lbnRzL1Jlc3VsdFNldC50c3g=) | `62.45% <ø> (ø)` | |
+| [...-frontend/src/components/OmniContainer/Omnibar.tsx](https://codecov.io/gh/apache/superset/pull/16412/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2NvbXBvbmVudHMvT21uaUNvbnRhaW5lci9PbW5pYmFyLnRzeA==) | `100.00% <ø> (ø)` | |
+| [superset-frontend/src/components/Select/Select.tsx](https://codecov.io/gh/apache/superset/pull/16412/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2NvbXBvbmVudHMvU2VsZWN0L1NlbGVjdC50c3g=) | `73.42% <ø> (ø)` | |
+| [...et-frontend/src/components/TableView/TableView.tsx](https://codecov.io/gh/apache/superset/pull/16412/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2NvbXBvbmVudHMvVGFibGVWaWV3L1RhYmxlVmlldy50c3g=) | `94.52% <ø> (ø)` | |
+| [superset-frontend/src/dashboard/actions/hydrate.js](https://codecov.io/gh/apache/superset/pull/16412/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9hY3Rpb25zL2h5ZHJhdGUuanM=) | `1.69% <0.00%> (ø)` | |
+| [...et-frontend/src/dashboard/components/Dashboard.jsx](https://codecov.io/gh/apache/superset/pull/16412/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9jb21wb25lbnRzL0Rhc2hib2FyZC5qc3g=) | `78.84% <ø> (ø)` | |
+| [...frontend/src/dashboard/components/Header/index.jsx](https://codecov.io/gh/apache/superset/pull/16412/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9jb21wb25lbnRzL0hlYWRlci9pbmRleC5qc3g=) | `69.49% <ø> (ø)` | |
+| [...ashboard/components/gridComponents/ChartHolder.jsx](https://codecov.io/gh/apache/superset/pull/16412/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9jb21wb25lbnRzL2dyaWRDb21wb25lbnRzL0NoYXJ0SG9sZGVyLmpzeA==) | `68.68% <ø> (ø)` | |
+| [...c/dashboard/components/gridComponents/Markdown.jsx](https://codecov.io/gh/apache/superset/pull/16412/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9jb21wb25lbnRzL2dyaWRDb21wb25lbnRzL01hcmtkb3duLmpzeA==) | `82.82% <ø> (ø)` | |
+| [...nd/src/dashboard/containers/DashboardComponent.jsx](https://codecov.io/gh/apache/superset/pull/16412/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9jb250YWluZXJzL0Rhc2hib2FyZENvbXBvbmVudC5qc3g=) | `100.00% <ø> (ø)` | |
+| ... and [144 more](https://codecov.io/gh/apache/superset/pull/16412/diff?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) | |
+
+------
+
+[Continue to review full report at Codecov](https://codecov.io/gh/apache/superset/pull/16412?src=pr&el=continue&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation).
+> **Legend** - [Click here to learn more](https://docs.codecov.io/docs/codecov-delta?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)
+> `Δ = absolute <relative> (impact)`, `ø = not affected`, `? = missing data`
+> Powered by [Codecov](https://codecov.io/gh/apache/superset/pull/16412?src=pr&el=footer&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation). Last update [bc4b6f0...35e50fe](https://codecov.io/gh/apache/superset/pull/16412?src=pr&el=lastupdated&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation). Read the [comment docs](https://docs.codecov.io/docs/pull-request-comments?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation).
+
+COMMENT_INFO
+robdiciuccio
+2021-08-23T22:09:27Z
+BEGIN_COMMENT
+@craig-rueda there is test coverage for using `g.form_data` [here](https://github.com/preset-io/superset/blob/rd/jinja-async-queries/tests/integration_tests/utils_tests.py#L992:L992). Flask `has_request_context` doesn't work properly in tests, apparently due to `flask._preserve_context` being enabled in `test_client()`, and mocking it doesn't work either. ¯\_(ツ)_/¯

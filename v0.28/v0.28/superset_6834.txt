@@ -1,0 +1,114 @@
+ISSUE_INFO
+superset
+v0.28
+6834
+9p4
+2019-02-07T14:49:28Z
+2019-04-19T20:00:30Z
+not_pull_request
+inactive,install:docker,v0.28,
+BEGIN_ISSUE
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+Make sure these boxes are checked before submitting your issue - thank you!
+
+- [x] I have checked the superset logs for python stacktraces and included it here as text if there are any.
+- [x] I have reproduced the issue with at least the latest released version of superset.
+- [x] I have checked the issue tracker for the same issue and I haven't found one similar.
+
+
+### Superset version
+
+0.28.1
+
+### Expected results
+
+Superset works perfectly in Apache2 behind a reverse proxy
+
+### Actual results
+
+Parts of the site are not loading: I get this error
+
+An error occurred while rendering the visualization: Error: Loading chunk 0 failed. (error: https://example.net/static/assets/dist/vendors-EventFlow-big_number-cal_heatmap-chord-country_map-directed_force-filter_box-heatmap-histogr-4abe76ce.fc10d2b92451bc9dbaf0.chunk.js)
+
+### Steps to reproduce
+
+Get Superset and run it on port 8088
+
+In `/etc/apache2/apache2.conf`, have this at the bottom:
+
+```
+# Apache Superset
+ProxyPass /superset http://localhost:8088
+ProxyPassReverse /superset http://localhost:8088
+
+<Location /superset>
+        RewriteEngine On
+    Header edit Location ^https?://([^/]+)/(.*)$ https://$1/superset/$2
+    RequestHeader unset Accept-Encoding
+    ProxyHTMLEnable On
+    ProxyHTMLExtended On
+    ProxyHTMLURLMap / /superset/
+    ProxyHTMLURLMap /superset/ /superset/
+        RewriteBase "/superset/"
+
+</Location>
+```
+COMMENT_INFO
+stale[bot]
+2019-02-07T14:49:28Z
+BEGIN_COMMENT
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions. For admin, please label this issue `.pinned` to prevent stale bot from closing the issue.
+
+COMMENT_INFO
+StarStuffSteve
+2019-02-07T14:49:28Z
+BEGIN_COMMENT
+Can confirm that this is still an issue. I have not yet found a way to successfully implement a reverse proxy (nginx, apache or IIS) in front of Superset. Some kind of redirect loop seem to always be formed.
+COMMENT_INFO
+fjcobo
+2019-02-07T14:49:28Z
+BEGIN_COMMENT
+Same problem here with Superset and Apache HTTP mod_proxy. Over HTTPS the login page not loading correctly. If I access port 8088 everything is correct. In Firefox debug console:
+
+- Strict-Transport-Security warnigs 
+- MIME type mismatch erros.
+
+Add that I have configured the following but it seems to do nothing:
+
+RequestHeader set X-Forwarded-Proto "https"
+
+
+COMMENT_INFO
+willbarrett
+2019-02-07T14:49:28Z
+BEGIN_COMMENT
+Looking at the original description, it looks like you are attempting to set up Superset at a location other than the root location. Superset does not support changes in its root directory. In order to successfully deploy Superset behind Apache or NGinx, it will need to be mounted at the location `/`. We are currently running Superset successfully in this manner behind NGinx at Preset.
+COMMENT_INFO
+krish7919
+2019-02-07T14:49:28Z
+BEGIN_COMMENT
+Dupe of https://github.com/apache/superset/issues/15089
+COMMENT_INFO
+krish7919
+2019-02-07T14:49:28Z
+BEGIN_COMMENT
+> Looking at the original description, it looks like you are attempting to set up Superset at a location other than the root location. Superset does not support changes in its root directory. In order to successfully deploy Superset behind Apache or NGinx, it will need to be mounted at the location `/`. We are currently running Superset successfully in this manner behind NGinx at Preset.
+
+I am still facing this issue, even after running under `/` 

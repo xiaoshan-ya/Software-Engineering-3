@@ -1,0 +1,136 @@
+ISSUE_INFO
+superset
+v0.28
+6491
+csc5k
+2018-12-05T18:46:12Z
+2020-03-24T10:40:32Z
+not_pull_request
+!deprecated-label:bug,inactive,v0.28,
+BEGIN_ISSUE
+Make sure these boxes are checked before submitting your issue - thank you!
+
+- [x ] I have checked the superset logs for python stacktraces and included it here as text if there are any.
+- [x ] I have reproduced the issue with at least the latest released version of superset.
+- [x ] I have checked the issue tracker for the same issue and I haven't found one similar.
+
+
+### Superset version
+28
+
+### Expected results
+I adjust the date filter and the filter is visible and my entries are applied to the dashboard
+
+### Actual results
+The filter becomes blank and I see this in the stack trace if I hit refresh:
+![image](https://user-images.githubusercontent.com/33062840/49536264-17074200-f894-11e8-9323-0c7a0a632af1.png)
+
+
+### Steps to reproduce
+Adjust the date range in a filter
+
+
+COMMENT_INFO
+alucchino
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+Hello,
+Same operations and same bug for us. It is really breaking as those date filters are widely used
+
+Thx
+COMMENT_INFO
+benleibert
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+Howdy,
+
+Superset is an awesome project! We’re also experiencing this issue, though, and it's a fairly painful one.
+
+Kind regards,
+Ben
+COMMENT_INFO
+mistercrunch
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+I recommend using the latest release candidate while we figure out the ASF release process `pip install superset==0.29.0rc7`
+COMMENT_INFO
+damir19
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+Thanks, we have the same problem too
+
+Thanks again! 
+Damir
+COMMENT_INFO
+stale[bot]
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.
+
+COMMENT_INFO
+benleibert
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+Bump in response to the stale bot.
+COMMENT_INFO
+Stephane-Thales
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+Same issue, any news or work-around ?
+COMMENT_INFO
+quamber-ali
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+Still Facing this issue. How much time is required more to resolve this issue?
+COMMENT_INFO
+r-raghul
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+I'm also facing the same issue.. is anybody working on it ?
+COMMENT_INFO
+aleks-walker
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+Issue is still there
+COMMENT_INFO
+stale[bot]
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions. For admin, please label this issue `.pinned` to prevent stale bot from closing the issue.
+
+COMMENT_INFO
+snowcrash007
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+Hey @Stephane-Thales @AlexWalker28 : Checking in to see if the issue is still there for you?
+COMMENT_INFO
+Stephane-Thales
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+> Hey @Stephane-Thales @AlexWalker28 : Checking in to see if the issue is still there for you?
+
+Sorry, I stopped testing SuperSet because of few issue, this one included, so i don't have a test environment available for the moment to recheck. I was planning to test again if i received news through this post that it's fixed...
+COMMENT_INFO
+aleks-walker
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+> Hey @Stephane-Thales @AlexWalker28 : Checking in to see if the issue is still there for you?
+
+I'm not really using it much because of the number of frustrating bugs.
+COMMENT_INFO
+stale[bot]
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions. For admin, please label this issue `.pinned` to prevent stale bot from closing the issue.
+
+COMMENT_INFO
+Stephane-Thales
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+Bump in response to the stale bot. Still waiting on this issue to be marked as fixed before I re-test superset again.
+COMMENT_INFO
+stale[bot]
+2018-12-05T18:46:12Z
+BEGIN_COMMENT
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions. For admin, please label this issue `.pinned` to prevent stale bot from closing the issue.
+

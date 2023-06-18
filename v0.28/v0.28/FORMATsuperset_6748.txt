@@ -1,0 +1,10 @@
+### Superset version Superset version 0.28.1 python 3.6.6 npm@6.7.0 node 11.7.0    when I run command   'npm run dev ' , it happened that error belows:  ERROR in ./src/visualizations/index.js 85:19 Module parse failed: Unexpected token (85:19) You may need an appropriate loader to handle this file type. | var loadNvd3 = function () { |   function loadNvd3() { >     return loadVis(import( /* webpackChunkName: "nvd3_vis" */'./nvd3/adaptor.jsx')); |   } |  @ ./src/modules/AnnotationTypes.js 17:22-50  @ ./src/chart/chartAction.js  @ ./src/explore/components/ExploreViewContainer.jsx  @ ./src/explore/App.jsx  @ ./src/explore/index.jsx  @ multi babel-polyfill ./src/explore/index.jsx   After the page loads, all charts and dashboards cannot be displayed  What should I do?    
+@jmarti15  Have you ever met this problem？ 
+no for the moment... i'm sorry  
+I encountered the same problem, This is due to lack of packages. you should run command"npm install". 
+Write down the solution to the problem. I solved it in the following ways. Thanks to the original author https://blog.csdn.net/zhangwenwu2/article/details/81093968 
+I'm facing this error as well. It seems to be due to the `import()` call. Running a node repl and just entering `import("fs");` it throws an unhandled promise error, which I thought was expected in all versions of node. I'm on v11.11.0 
+`npm install` didn't fix the issue for me. 
+Turns out this is due to an issue in webpack ^4.29.0. Reverting to 4.28.2 resolved this issue. 
+The current `package-lock.json` points to `"version": "4.27.1"`, wondering how you got to this. Did you bump webpack in your fork? 
+How do you fix the issue ? It didn't work for me ... 

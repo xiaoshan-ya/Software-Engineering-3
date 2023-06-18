@@ -1,0 +1,59 @@
+ISSUE_INFO
+superset
+v0.28
+6500
+csc5k
+2018-12-07T17:15:17Z
+2018-12-24T12:25:12Z
+not_pull_request
+!deprecated-label:bug,v0.28,
+BEGIN_ISSUE
+Make sure these boxes are checked before submitting your issue - thank you!
+
+- [ x] I have checked the superset logs for python stacktraces and included it here as text if there are any.
+- [x ] I have reproduced the issue with at least the latest released version of superset.
+- [x ] I have checked the issue tracker for the same issue and I haven't found one similar.
+
+
+### Superset version
+28
+
+### Expected results
+When I login, I see dashboards
+
+### Actual results
+The home page is blank, and does not show any of my favorites. However, if I navigate to the Dashboards tab, I see dashboards
+![image](https://user-images.githubusercontent.com/33062840/49662407-befa4800-fa19-11e8-91fb-ad4cd0819947.png)
+
+![image](https://user-images.githubusercontent.com/33062840/49662471-e7824200-fa19-11e8-8b15-24c7e5e03aab.png)
+
+
+![image](https://user-images.githubusercontent.com/33062840/49662441-d20d1800-fa19-11e8-974f-ab70763dfe65.png)
+
+![image](https://user-images.githubusercontent.com/33062840/49662485-eea95000-fa19-11e8-80e3-00277837bf4c.png)
+
+
+### Steps to reproduce
+Log in
+
+
+COMMENT_INFO
+mistercrunch
+2018-12-07T17:15:17Z
+BEGIN_COMMENT
+Can you try `0.28.0rc7`? `pip install superset==0.28.0rc7`
+COMMENT_INFO
+Apple-Flavor
+2018-12-07T17:15:17Z
+BEGIN_COMMENT
+The response json is OK, but the profile/{username}/  Favorites tab display "No favorite dashboards yet, go click on stars!". JSON is :  [{"id": 5, "dashboard": "<a href=\"/superset/dashboard/5/?preselect_filters=xxxxxxxx\">myDashboard</a>", "title": "myDashboard", "url": "/superset/dashboard/5/?preselect_filters=xxxxx", "dttm": 1544719406633.9778}].  anyone knows which version had fixed this issue?
+COMMENT_INFO
+XuanmoFeng
+2018-12-07T17:15:17Z
+BEGIN_COMMENT
+You can use  'yarn run build',if you use 'dev' ,can't display welcome page   
+COMMENT_INFO
+kristw
+2018-12-07T17:15:17Z
+BEGIN_COMMENT
+related to #5935 

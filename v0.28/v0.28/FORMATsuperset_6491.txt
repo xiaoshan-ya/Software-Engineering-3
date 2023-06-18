@@ -1,0 +1,18 @@
+Make sure these boxes are checked before submitting your issue - thank you!  - [x ] I have checked the superset logs for python stacktraces and included it here as text if there are any. - [x ] I have reproduced the issue with at least the latest released version of superset. - [x ] I have checked the issue tracker for the same issue and I haven't found one similar.   ### Superset version 28  ### Expected results I adjust the date filter and the filter is visible and my entries are applied to the dashboard  ### Actual results The filter becomes blank and I see this in the stack trace if I hit refresh: ![image](https://user-images.githubusercontent.com/33062840/49536264-17074200-f894-11e8-9323-0c7a0a632af1.png)   ### Steps to reproduce Adjust the date range in a filter   
+Hello, Same operations and same bug for us. It is really breaking as those date filters are widely used  Thx 
+Howdy,  Superset is an awesome project! We’re also experiencing this issue, though, and it's a fairly painful one.  Kind regards, Ben 
+I recommend using the latest release candidate while we figure out the ASF release process `pip install superset==0.29.0rc7` 
+Thanks, we have the same problem too  Thanks again!  Damir 
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.  
+Bump in response to the stale bot. 
+Same issue, any news or work-around ? 
+Still Facing this issue. How much time is required more to resolve this issue? 
+I'm also facing the same issue.. is anybody working on it ? 
+Issue is still there 
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions. For admin, please label this issue `.pinned` to prevent stale bot from closing the issue.  
+Hey @Stephane-Thales @AlexWalker28 : Checking in to see if the issue is still there for you? 
+> Hey @Stephane-Thales @AlexWalker28 : Checking in to see if the issue is still there for you?  Sorry, I stopped testing SuperSet because of few issue, this one included, so i don't have a test environment available for the moment to recheck. I was planning to test again if i received news through this post that it's fixed... 
+> Hey @Stephane-Thales @AlexWalker28 : Checking in to see if the issue is still there for you?  I'm not really using it much because of the number of frustrating bugs. 
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions. For admin, please label this issue `.pinned` to prevent stale bot from closing the issue.  
+Bump in response to the stale bot. Still waiting on this issue to be marked as fixed before I re-test superset again. 
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions. For admin, please label this issue `.pinned` to prevent stale bot from closing the issue.  

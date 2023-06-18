@@ -1,0 +1,184 @@
+ISSUE_INFO
+superset
+v0.28
+6684
+msestak
+2019-01-14T13:09:19Z
+2019-02-07T07:17:30Z
+not_pull_request
+#bug:cant-reproduce,install:docker,v0.28,
+BEGIN_ISSUE
+I have trouble downloading superset 0.28.1 (and superset 0.23.x - 0.28.0) because it fails at downloading pydruid dependency.
+
+### Superset version
+
+I tried versions 0.23.x - 0.28.1
+Earlier versions work.
+```
+[root@tardis tmp]# /root/pydev/py36-venv/bin/pip --version
+pip 18.1 from /root/pydev/py36-venv/lib64/python3.6/site-packages/pip (python 3.6)
+[root@tardis tmp]# /root/pydev/py36-venv/bin/pip show setuptools
+Name: setuptools
+Version: 40.6.3
+
+
+### Error
+Error happens because pip can't download pydruid 0.5.0 (and all versions 0.4.x) with error:
+
+[root@tardis python36]# /root/pydev/py36-venv/bin/pip download --proxy=http://proxyuser:proxypass@proxy:8080 superset==0.28.1 --dest=/tmp/python36
+Collecting superset==0.28.1
+  Using cached https://files.pythonhosted.org/packages/da/48/583551048b9e045eed47dbd93c3210fa1e02193e4fad226033a19754525c/superset-0.28.1.tar.gz
+  Saved ./superset-0.28.1.tar.gz
+Collecting bleach (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/ab/05/27e1466475e816d3001efb6e0a85a819be17411420494a1e602c36f8299d/bleach-3.1.0-py2.py3-none-any.whl
+  Saved ./bleach-3.1.0-py2.py3-none-any.whl
+Collecting boto3==1.4.7 (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/e0/7c/ed4ddcaa65dadba5992fba71b0cd221181f189dd87ac975d25d33c190a61/boto3-1.4.7-py2.py3-none-any.whl
+  Saved ./boto3-1.4.7-py2.py3-none-any.whl
+Collecting botocore<1.8.0,>=1.7.0 (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/78/07/88ef02fca320ff8f61a5c8f46739f72e715f8745c9ddbf59fc5dba43db1a/botocore-1.7.48-py2.py3-none-any.whl
+  Saved ./botocore-1.7.48-py2.py3-none-any.whl
+Collecting celery>=4.2.0 (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/e8/58/2a0b1067ab2c12131b5c089dfc579467c76402475c5231095e36a43b749c/celery-4.2.1-py2.py3-none-any.whl
+  Saved ./celery-4.2.1-py2.py3-none-any.whl
+Collecting click==6.7 (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/34/c1/8806f99713ddb993c5366c362b2f908f18269f8d792aff1abfd700775a77/click-6.7-py2.py3-none-any.whl
+  Saved ./click-6.7-py2.py3-none-any.whl
+Collecting colorama==0.3.9 (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/db/c8/7dcf9dbcb22429512708fe3a547f8b6101c0d02137acbd892505aee57adf/colorama-0.3.9-py2.py3-none-any.whl
+  Saved ./colorama-0.3.9-py2.py3-none-any.whl
+Collecting contextlib2 (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/a2/71/8273a7eeed0aff6a854237ab5453bc9aa67deb49df4832801c21f0ff3782/contextlib2-0.5.5-py2.py3-none-any.whl
+  Saved ./contextlib2-0.5.5-py2.py3-none-any.whl
+Collecting cryptography (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/60/c7/99b33c53cf3f20a97a4c4bfd3ab66dcc93d99da0a97cc9597aa36ae6bb62/cryptography-2.4.2-cp34-abi3-manylinux1_x86_6$
+.whl
+  Saved ./cryptography-2.4.2-cp34-abi3-manylinux1_x86_64.whl
+ollecting flask<1.0.0 (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/2e/48/f1936dadac2326b3d73f2fe0a964a87d16be16eb9d7fc56f09c1bea3d17c/Flask-0.12.4-py2.py3-none-any.whl
+  Saved ./Flask-0.12.4-py2.py3-none-any.whl
+Collecting flask-appbuilder>=1.12.1 (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/2c/e8/56ae02bfbb85bbaea436fc2e8850ebdc11df80ff2acfe0edb506e2fa9cad/Flask-AppBuilder-1.12.2.tar.gz
+  Saved ./Flask-AppBuilder-1.12.2.tar.gz
+Collecting flask-caching (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/63/c0/5dce9fe8372a7b57b60ec7650e1aeb1a2f861393b0c6e7e2dcb71d2f31ab/Flask_Caching-1.4.0-py2.py3-none-any.whl
+  Saved ./Flask_Caching-1.4.0-py2.py3-none-any.whl
+Collecting flask-compress (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/0e/2a/378bd072928f6d92fd8c417d66b00c757dc361c0405a46a0134de6fd323d/Flask-Compress-1.4.0.tar.gz
+  Saved ./Flask-Compress-1.4.0.tar.gz
+Collecting flask-migrate (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/93/f4/aca055d4f4cabb8e6aedf258dfe58100c264bfdf1d236ee821239e9d2b42/Flask_Migrate-2.3.1-py2.py3-none-any.whl
+  Saved ./Flask_Migrate-2.3.1-py2.py3-none-any.whl
+Collecting flask-wtf (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/60/3a/58c629472d10539ae5167dc7c1fecfa95dd7d0b7864623931e3776438a24/Flask_WTF-0.14.2-py2.py3-none-any.whl
+  Saved ./Flask_WTF-0.14.2-py2.py3-none-any.whl
+Collecting flower (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/48/7f/344a8f93cbd6669b4fd03c04d8f9a06e9023da7b61145dea5836433bbbe5/flower-0.9.2.tar.gz
+  Saved ./flower-0.9.2.tar.gz
+Collecting future<0.17,>=0.16.0 (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/00/2b/8d082ddfed935f3608cc61140df6dcbf0edea1bc3ab52fb6c29ae3e81e85/future-0.16.0.tar.gz
+  Saved ./future-0.16.0.tar.gz
+Collecting geopy (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/a8/5c/ca78a17b2c6fe1179e9221c9280bb5d8caaf048a631ed72caed40c52de24/geopy-1.18.1-py2.py3-none-any.whl
+  Saved ./geopy-1.18.1-py2.py3-none-any.whl
+Collecting gunicorn (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/8c/da/b8dd8deb741bff556db53902d4706774c8e1e67265f69528c14c003644e6/gunicorn-19.9.0-py2.py3-none-any.whl
+  Saved ./gunicorn-19.9.0-py2.py3-none-any.whl
+Collecting humanize (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/8c/e0/e512e4ac6d091fc990bbe13f9e0378f34cf6eecd1c6c268c9e598dcf5bb9/humanize-0.5.1.tar.gz
+  Saved ./humanize-0.5.1.tar.gz
+Collecting idna (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/14/2c/cd551d81dbe15200be1cf41cd03869a46fe7226e7450af7a6545bfc474c9/idna-2.8-py2.py3-none-any.whl
+  Saved ./idna-2.8-py2.py3-none-any.whl
+Collecting isodate (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/9b/9f/b36f7774ff5ea8e428fdcfc4bb332c39ee5b9362ddd3d40d9516a55221b2/isodate-0.6.0-py2.py3-none-any.whl
+  Saved ./isodate-0.6.0-py2.py3-none-any.whl
+Collecting markdown>=3.0 (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/7a/6b/5600647404ba15545ec37d2f7f58844d690baf2f81f3a60b862e48f29287/Markdown-3.0.1-py2.py3-none-any.whl
+  Saved ./Markdown-3.0.1-py2.py3-none-any.whl
+Collecting pandas>=0.18.0 (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/e1/d8/feeb346d41f181e83fba45224ab14a8d8af019b48af742e047f3845d8cff/pandas-0.23.4-cp36-cp36m-manylinux1_x86_64.whl
+  Saved ./pandas-0.23.4-cp36-cp36m-manylinux1_x86_64.whl
+Collecting parsedatetime (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/e3/b3/02385db13f1f25f04ad7895f35e9fe3960a4b9d53112775a6f7d63f264b6/parsedatetime-2.4.tar.gz
+  Saved ./parsedatetime-2.4.tar.gz
+Collecting pathlib2 (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/2a/46/c696dcf1c7aad917b39b875acdc5451975e3a9b4890dca8329983201c97a/pathlib2-2.3.3-py2.py3-none-any.whl
+  Saved ./pathlib2-2.3.3-py2.py3-none-any.whl
+Collecting polyline (from superset==0.28.1)
+  Using cached https://files.pythonhosted.org/packages/c1/d0/58a19ca3fbe880145d200518fcd97d176cae07b9677db330f4881954d5f5/polyline-1.3.2-py2.py3-none-any.whl
+  Saved ./polyline-1.3.2-py2.py3-none-any.whl
+Collecting pydruid>=0.4.3 (from superset==0.28.1)
+Using cached https://files.pythonhosted.org/packages/8d/e2/e365192d088d05cada647512cf5d0c0fbeb9f3ddfaf1e1a5d885b1344386/pydruid-0.5.0.tar.gz
+  Saved ./pydruid-0.5.0.tar.gz
+    Complete output from command python setup.py egg_info:
+    Download error on https://pypi.org/simple/pytest-runner/: [Errno 101] Network is unreachable -- Some packages may not be found!
+    Couldn't find index page for 'pytest-runner' (maybe misspelled?)
+    Download error on https://pypi.org/simple/: [Errno 101] Network is unreachable -- Some packages may not be found!
+    No local packages or working download links found for pytest-runner
+    Traceback (most recent call last):
+      File "<string>", line 1, in <module>
+      File "/tmp/pip-download-1onj1enw/pydruid/setup.py", line 44, in <module>
+        include_package_data=True,
+      File "/root/pydev/py36-venv/lib64/python3.6/site-packages/setuptools/__init__.py", line 142, in setup
+        _install_setup_requires(attrs)
+      File "/root/pydev/py36-venv/lib64/python3.6/site-packages/setuptools/__init__.py", line 137, in _install_setup_requires
+        dist.fetch_build_eggs(dist.setup_requires)
+      File "/root/pydev/py36-venv/lib64/python3.6/site-packages/setuptools/dist.py", line 586, in fetch_build_eggs
+        replace_conflicting=True,
+      File "/root/pydev/py36-venv/lib64/python3.6/site-packages/pkg_resources/__init__.py", line 780, in resolve
+        replace_conflicting=replace_conflicting
+      File "/root/pydev/py36-venv/lib64/python3.6/site-packages/pkg_resources/__init__.py", line 1063, in best_match
+        return self.obtain(req, installer)
+      File "/root/pydev/py36-venv/lib64/python3.6/site-packages/pkg_resources/__init__.py", line 1075, in obtain
+        return installer(requirement)
+      File "/root/pydev/py36-venv/lib64/python3.6/site-packages/setuptools/dist.py", line 653, in fetch_build_egg
+        return cmd.easy_install(req)
+      File "/root/pydev/py36-venv/lib64/python3.6/site-packages/setuptools/command/easy_install.py", line 673, in easy_install
+        raise DistutilsError(msg)
+    distutils.errors.DistutilsError: Could not find suitable distribution for Requirement.parse('pytest-runner')
+
+    ----------------------------------------
+Command "python setup.py egg_info" failed with error code 1 in /tmp/pip-download-1onj1enw/pydruid/
+```
+
+### versions 0.22.x and earlier work because they require pydruid 0.3.1 which downloads fine
+
+Any idea how to solve this issue? Or how to exclude pydruid from download and install.
+
+COMMENT_INFO
+mistercrunch
+2019-01-14T13:09:19Z
+BEGIN_COMMENT
+Mmmh, from your logs:
+```
+Couldn't find index page for 'pytest-runner' (maybe misspelled?)
+Download error on https://pypi.org/simple/: [Errno 101] Network is unreachable -- Some packages may not be found!
+```
+I can totally install `pip install pytest-runner`, no issue on my side. 
+COMMENT_INFO
+msestak
+2019-01-14T13:09:19Z
+BEGIN_COMMENT
+I can download pytest-runner as well.
+
+Download of pytest-runner works:
+`
+[root@tardis python36]# /root/pydev/py36-venv/bin/pip download --proxy=http://proxyuser:proxypass@proxy:8080 pytest-runner --dest=/tmp/python36
+Collecting pytest-runner
+File was already downloaded /tmp/python36/pytest_runner-4.2-py2.py3-none-any.whl
+Successfully downloaded pytest-runner`
+
+However, I can't download pydruid with above error.
+
+
+COMMENT_INFO
+DavidJHassan
+2019-01-14T13:09:19Z
+BEGIN_COMMENT
+I had to install superset and use the flag --ignore-installed
+COMMENT_INFO
+msestak
+2019-01-14T13:09:19Z
+BEGIN_COMMENT
+Problem occurred because this was clean install. Solution was to install pytest-runner before I tried superset install.  

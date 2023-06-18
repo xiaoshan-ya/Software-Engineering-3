@@ -1,0 +1,98 @@
+ISSUE_INFO
+superset
+v1.3
+15453
+vermilioncity
+2021-06-29T14:56:42Z
+2021-06-30T14:27:42Z
+not_pull_request
+#bug,v1.3,
+BEGIN_ISSUE
+In 1.3 branch, when you click on "Export Dashboard", the app loads interminably and never downloads the JSON.
+
+This functionality worked in 1.2.  It's worth noting that 1.3 has an additional parameter with the endpoint it is hitting (`token`), that was not there in previous versions.
+
+Also, if you hit the API endpoint directly, e.g., `http://<domain_name>.com/api/v1/dashboard/export/?q=[6,7]`, exports work as expected.
+
+### Expected results
+
+The dashboard should be downloaded almost instantaneously as a JSON.
+
+### Actual results
+
+The app has the loading icon interminably and never downloads.
+
+Logs when I attached to the container:
+```
+2021-06-29 14:54:53,420:ERROR:root:the JSON object must be str, bytes or bytearray, not NoneType
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.7/site-packages/flask_appbuilder/api/__init__.py", line 85, in wraps
+    return f(self, *args, **kwargs)
+  File "/app/superset/views/base_api.py", line 85, in wraps
+    raise ex
+  File "/app/superset/views/base_api.py", line 82, in wraps
+    duration, response = time_function(f, self, *args, **kwargs)
+  File "/app/superset/utils/core.py", line 1416, in time_function
+    response = func(*args, **kwargs)
+  File "/usr/local/lib/python3.7/site-packages/flask_appbuilder/api/__init__.py", line 155, in wraps
+    return f(self, *args, **kwargs)
+  File "/app/superset/utils/log.py", line 228, in wrapper
+    value = f(*args, **kwargs)
+  File "/app/superset/dashboards/api.py", line 743, in export
+    export = Dashboard.export_dashboards(ids)
+  File "/app/superset/models/dashboard.py", line 338, in export_dashboards
+    json_metadata = json.loads(dashboard.json_metadata)
+  File "/usr/local/lib/python3.7/json/__init__.py", line 341, in loads
+    raise TypeError(f'the JSON object must be str, bytes or bytearray, '
+TypeError: the JSON object must be str, bytes or bytearray, not NoneType
+```
+
+#### Screenshots
+1.3 (does not work)
+![image](https://user-images.githubusercontent.com/35211278/123812711-4eaabf00-d8c2-11eb-90f7-32ec3f2c9731.png)
+
+1.2 (works correctly)
+![image](https://user-images.githubusercontent.com/35211278/123813441-e6101200-d8c2-11eb-9558-2ded64e1848a.png)
+
+#### How to reproduce the bug
+
+1. Go to https://<domain>/dashboard/list/
+2. Create dashboard
+3. Click on export
+4. Watch it load interminably :(
+
+(Issue also exists on dashboards with charts in them and the like, but wanted to make sure it wasn't my dashboard that was the issue.)
+
+### Environment
+
+- superset version: 1.3 branch
+- python version: Python 3.7.9
+- node.js version: 14
+
+### Checklist
+
+- [ x ] I have checked the superset logs for python stacktraces and included it here as text if there are any.
+- [ x ] I have reproduced the issue with at least the latest released version of superset.
+- [ x ] I have checked the issue tracker for the same issue and I haven't found one similar.
+COMMENT_INFO
+amitmiran137
+2021-06-29T14:56:42Z
+BEGIN_COMMENT
+hi @vermilioncity ,
+
+Did you toggle on the VERSIONED_EXPORT feature_flag?
+COMMENT_INFO
+vermilioncity
+2021-06-29T14:56:42Z
+BEGIN_COMMENT
+We hadn't!  We toggled it, and it does successfully download the JSON now.  However, the forever-loading icon remains, so there is a cosmetic bug.
+COMMENT_INFO
+vermilioncity
+2021-06-29T14:56:42Z
+BEGIN_COMMENT
+Actually, update on this.  It helps if we use the same dashboard for testing ;).   The forever-loading-but-downloads happens with dashboards that use a physical dataset.  If using a virtual dataset, it forever-loads-and-also-doesn't-download.
+COMMENT_INFO
+vermilioncity
+2021-06-29T14:56:42Z
+BEGIN_COMMENT
+Nm, we didn't set the flag correctly, it looks like.  All good here!  This can be closed :P

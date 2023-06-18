@@ -1,0 +1,172 @@
+ISSUE_INFO
+superset
+v1.3
+16416
+betodealmeida
+2021-08-24T04:22:12Z
+2021-08-25T00:07:29Z
+pull_request
+size/M,need:merge,need:review,v1.3,
+BEGIN_ISSUE
+### SUMMARY
+<!--- Describe the change below, including rationale and design decisions -->
+
+[Shillelagh](https://github.com/betodealmeida/shillelagh/) is a library for querying APIs via SQL. It's currently used by Superset in order to connect to Google Sheets, but it offers more APIs:
+
+#### Datasette
+
+[Datasette](https://datasette.io/) is an open-source tool for exploring and publishing data, developed by one of the creators of Django. "Datasettes" are self-hosted micro web apps that serve a few tables, with a friendly UI. For example, [this list of trees in SF](https://san-francisco.datasettes.com/sf-trees/Street_Tree_List).
+
+Shillelagh can query any Datasette table directly:
+
+```sql
+% shillelagh
+sql> SELECT * FROM "https://san-francisco.datasettes.com/sf-trees/Street_Tree_List" LIMIT 5;
+  TreeID    qLegalStatus    qSpecies  qAddress             SiteOrder    qSiteInfo    PlantType    qCaretaker  qCareAssistant    PlantDate                 DBH  PlotSize    PermitNotes                XCoord       YCoord    Latitude    Longitude  Location
+--------  --------------  ----------  -----------------  -----------  -----------  -----------  ------------  ----------------  ----------------------  -----  ----------  --------------------  -----------  -----------  ----------  -----------  -------------------------------------
+  141565               1           1  501X Baker St                1            1            1             1                    07/21/1988 12:00:00 AM     21  Width 0ft   Permit Number 25401   6.00061e+06  2.11083e+06     37.776      -122.441  (37.7759676911831, -122.441396661871)
+  232565               2           2  940 Elizabeth St             1            2            1             1                    03/20/2017 12:00:00 AM      3  Width 4ft   Permit Number 779625  6.0004e+06   2.102e+06       37.7517     -122.441  (37.7517102172731, -122.441498017841)
+  119263               3           3  495X Lakeshore Dr            1            3            1             2                                                   10x30
+  207368               2           4  920 Kirkham St               1            1            1             1                                                6  Width 1ft                         5.99201e+06  2.10527e+06     37.7602     -122.471  (37.760210314285, -122.47073935813)
+  188702               3           5  1501 Evans Ave               2            4            1             2                                               17  Width 4ft                         6.01599e+06  2.09822e+06     37.7422     -122.387  (37.7422086702947, -122.387293152263)
+sql>
+```
+
+We can create a dataset in Superset and make a map of red maple trees in SF:
+
+![Screenshot 2021-08-23 at 21-12-41  DEV  Red maple trees in SF](https://user-images.githubusercontent.com/1534870/130554644-8e1549b3-5660-4664-a228-c3999ece7d78.png)
+
+#### Socrata
+
+The [Socrata Open Data API](https://dev.socrata.com/) is a simple API used by many governments, non-profits, and NGOs around the world, including the CDC. Shillelagh can connect directly to any Socrata dataset by using its API URL. Here's an example showing the [percentage of adults partially vaccinated for COVID-19 in the US](https://data.cdc.gov/resource/unsk-b7fc):
+
+![Screen Shot 2021-08-24 at 8 13 40 AM](https://user-images.githubusercontent.com/1534870/130642774-f52ffce5-660f-4d92-8f5c-b5c71b864f24.png)
+
+
+```sql
+% shillelagh
+sql> SELECT date, administered_dose1_recip_4 FROM "https://data.cdc.gov/resource/unsk-b7fc.json" WHERE location='US' LIMIT 5;
+date          administered_dose1_recip_4
+----------  ----------------------------
+2021-08-23                          73.1
+2021-08-22                          73
+2021-08-21                          72.9
+2021-08-20                          72.7
+2021-08-19                          72.5
+sql>
+```
+
+We can also create a dataset in Superset and make a time series:
+
+![Screenshot 2021-08-23 at 21-21-45  DEV  % adults partially vaccinated US](https://user-images.githubusercontent.com/1534870/130555300-d7a5e0ff-d029-47a7-b0a1-cac75acf4573.png)
+
+#### WeatherAPI
+
+This adapter offers access to historical weather data from [WeatherAPI](https://www.weatherapi.com/). It requires signing up and an API key, but there's a free account.
+
+Here's an example chart showing the perceived temperature in Fahrenheit in Bodega Bay:
+
+```sql
+% shillelagh
+sql> SELECT AVG(feelslike_f) AS "AVG(feelslike_f)"
+FROM "https://api.weatherapi.com/v1/history.json?q=94923"
+LIMIT 10000
+OFFSET 0;
+  AVG(feelslike_f)
+------------------
+           57.6054
+sql>
+```
+
+![Screenshot 2021-08-24 at 08-40-19  DEV  Explore - https api weatherapi com v1 history json q=94923](https://user-images.githubusercontent.com/1534870/130647161-a167fc13-465d-4bbf-aaf4-ca3948bfadbe.png)
+
+
+### BEFORE/AFTER SCREENSHOTS OR ANIMATED GIF
+<!--- Skip this if not applicable -->
+
+N/A
+
+### TESTING INSTRUCTIONS
+<!--- Required! What steps can be taken to manually verify the changes? -->
+
+Shillelagh supports two dialects, `shillelagh://` and `shillelagh+safe://`. The former is disabled in Superset if `PREVENT_UNSAFE_DB_CONNECTIONS` is true, since it can read and write to disk. The latter allows only safe adapters to be loaded, and they have to be listed explicitly:
+
+<img src="https://user-images.githubusercontent.com/1534870/130652237-3629a1ff-de4d-4fff-9bbc-d4ddecf253c8.png" width="60%" />
+
+<img src="https://user-images.githubusercontent.com/1534870/130651792-e43e5f10-a28f-49fd-a9ef-eade3728c7d1.png" width="60%" style="box-shadow:5px 5px 5px #999;" />
+
+An API key is needed for WeatherAPI:
+
+<img src="https://user-images.githubusercontent.com/1534870/130651768-71c4cafd-54f8-4d36-984b-09c14612c863.png" width="60%" />
+
+### ADDITIONAL INFORMATION
+<!--- Check any relevant boxes with "x" -->
+<!--- HINT: Include "Fixes #nnn" if you are fixing an existing issue -->
+- [ ] Has associated issue:
+- [ ] Required feature flags:
+- [ ] Changes UI
+- [ ] Includes DB Migration (follow approval process in [SIP-59](https://github.com/apache/superset/issues/13351))
+  - [ ] Migration is atomic, supports rollback & is backwards-compatible
+  - [ ] Confirm DB migration upgrade and downgrade tested
+  - [ ] Runtime estimates and downtime expectations provided
+- [ ] Introduces new feature or API
+- [ ] Removes existing feature or API
+
+COMMENT_INFO
+codecov[bot]
+2021-08-24T04:22:12Z
+BEGIN_COMMENT
+# [Codecov](https://codecov.io/gh/apache/superset/pull/16416?src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) Report
+> Merging [#16416](https://codecov.io/gh/apache/superset/pull/16416?src=pr&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) (f330351) into [master](https://codecov.io/gh/apache/superset/commit/50d896f1b74c363d944ef462dc87c6674305a69f?el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) (50d896f) will **increase** coverage by `0.00%`.
+> The diff coverage is `67.77%`.
+
+> :exclamation: Current head f330351 differs from pull request most recent head 424abf2. Consider uploading reports for the commit 424abf2 to get more accurate results
+[![Impacted file tree graph](https://codecov.io/gh/apache/superset/pull/16416/graphs/tree.svg?width=650&height=150&src=pr&token=KsB0fHcx6l&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)](https://codecov.io/gh/apache/superset/pull/16416?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)
+
+```diff
+@@           Coverage Diff           @@
+##           master   #16416   +/-   ##
+=======================================
+  Coverage   76.51%   76.51%           
+=======================================
+  Files        1000     1001    +1     
+  Lines       53479    53506   +27     
+  Branches     6815     6814    -1     
+=======================================
++ Hits        40917    40938   +21     
+- Misses      12326    12330    +4     
+- Partials      236      238    +2     
+```
+
+| Flag | Coverage Δ | |
+|---|---|---|
+| hive | `81.26% <80.88%> (+0.03%)` | :arrow_up: |
+| mysql | `?` | |
+| postgres | `81.52% <86.02%> (-0.03%)` | :arrow_down: |
+| presto | `81.33% <80.14%> (?)` | |
+| python | `82.02% <86.76%> (+0.11%)` | :arrow_up: |
+| sqlite | `81.20% <85.92%> (+0.05%)` | :arrow_up: |
+
+Flags with carried forward coverage won't be shown. [Click here](https://docs.codecov.io/docs/carryforward-flags?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#carryforward-flags-in-the-pull-request-comment) to find out more.
+
+| [Impacted Files](https://codecov.io/gh/apache/superset/pull/16416?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) | Coverage Δ | |
+|---|---|---|
+| [superset-frontend/src/components/Modal/Modal.tsx](https://codecov.io/gh/apache/superset/pull/16416/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2NvbXBvbmVudHMvTW9kYWwvTW9kYWwudHN4) | `100.00% <ø> (ø)` | |
+| [...-frontend/src/components/OmniContainer/Omnibar.tsx](https://codecov.io/gh/apache/superset/pull/16416/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2NvbXBvbmVudHMvT21uaUNvbnRhaW5lci9PbW5pYmFyLnRzeA==) | `100.00% <ø> (ø)` | |
+| [...rset-frontend/src/components/ReportModal/index.tsx](https://codecov.io/gh/apache/superset/pull/16416/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2NvbXBvbmVudHMvUmVwb3J0TW9kYWwvaW5kZXgudHN4) | `93.75% <ø> (+20.83%)` | :arrow_up: |
+| [...et-frontend/src/dashboard/components/Dashboard.jsx](https://codecov.io/gh/apache/superset/pull/16416/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9jb21wb25lbnRzL0Rhc2hib2FyZC5qc3g=) | `78.84% <ø> (ø)` | |
+| [...rontend/src/dashboard/containers/DashboardPage.tsx](https://codecov.io/gh/apache/superset/pull/16416/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9jb250YWluZXJzL0Rhc2hib2FyZFBhZ2UudHN4) | `0.00% <0.00%> (ø)` | |
+| [...c/views/CRUD/data/database/DatabaseModal/index.tsx](https://codecov.io/gh/apache/superset/pull/16416/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL3ZpZXdzL0NSVUQvZGF0YS9kYXRhYmFzZS9EYXRhYmFzZU1vZGFsL2luZGV4LnRzeA==) | `44.24% <0.00%> (-0.12%)` | :arrow_down: |
+| [superset/charts/commands/importers/dispatcher.py](https://codecov.io/gh/apache/superset/pull/16416/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQvY2hhcnRzL2NvbW1hbmRzL2ltcG9ydGVycy9kaXNwYXRjaGVyLnB5) | `80.64% <ø> (ø)` | |
+| [superset/cli.py](https://codecov.io/gh/apache/superset/pull/16416/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQvY2xpLnB5) | `52.85% <0.00%> (ø)` | |
+| [superset/commands/importers/v1/\_\_init\_\_.py](https://codecov.io/gh/apache/superset/pull/16416/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQvY29tbWFuZHMvaW1wb3J0ZXJzL3YxL19faW5pdF9fLnB5) | `94.73% <ø> (ø)` | |
+| [superset/commands/importers/v1/examples.py](https://codecov.io/gh/apache/superset/pull/16416/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQvY29tbWFuZHMvaW1wb3J0ZXJzL3YxL2V4YW1wbGVzLnB5) | `39.53% <ø> (ø)` | |
+| ... and [102 more](https://codecov.io/gh/apache/superset/pull/16416/diff?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) | |
+
+------
+
+[Continue to review full report at Codecov](https://codecov.io/gh/apache/superset/pull/16416?src=pr&el=continue&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation).
+> **Legend** - [Click here to learn more](https://docs.codecov.io/docs/codecov-delta?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)
+> `Δ = absolute <relative> (impact)`, `ø = not affected`, `? = missing data`
+> Powered by [Codecov](https://codecov.io/gh/apache/superset/pull/16416?src=pr&el=footer&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation). Last update [50d896f...424abf2](https://codecov.io/gh/apache/superset/pull/16416?src=pr&el=lastupdated&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation). Read the [comment docs](https://docs.codecov.io/docs/pull-request-comments?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation).
+

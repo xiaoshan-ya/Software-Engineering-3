@@ -1,0 +1,110 @@
+ISSUE_INFO
+superset
+v0.28
+6685
+John-Athan
+2019-01-14T16:56:30Z
+2019-01-21T13:38:29Z
+not_pull_request
+!deprecated-label:bug,change:backend,v0.28,
+BEGIN_ISSUE
+Make sure these boxes are checked before submitting your issue - thank you!
+
+- [/] I have checked the superset logs for python stacktraces and included it here as text if there are any.
+- [/] I have reproduced the issue with at least the latest released version of superset.
+- [/] I have checked the issue tracker for the same issue and I haven't found one similar.
+
+
+### Superset version
+0.28.1
+
+### Expected results
+When a column type in Druid (0.12.3) is changed (for example "String" -> "Long") and a "Refresh Metadata" is done, Superset gets the columns of the latest segment and updates all necessary Types (Column now has type "Long").
+
+### Actual results
+[Looking at the code](https://github.com/apache/incubator-superset/blob/b1dbd1cab64d0f18146026e49769f0dec073258a/superset/connectors/druid/models.py#L593), it does exactly as expected. In practice, the types in Superset stay the same (e.g. "String"). 
+The Column type in Druid is now "Long" and displayed as "String" in Superset. This can be verified by metadata queries.
+No Logs are shown in the process of refreshing metadata. 
+
+### Steps to reproduce
+- Ingest Data into Druid with String Columns in Druid and point Superset to it
+- Change a column type in Druid and refresh metadata in Superset
+
+Without Superset adapting the new data type, queries that sum up the values of a column cannot be done via Superset. If the column is given capability to "sum" in the datasource edit section, Superset tries to do a "StringSum" when running the query, which does not exist in Druid. 
+COMMENT_INFO
+John-Athan
+2019-01-14T16:56:30Z
+BEGIN_COMMENT
+Investigating this issue further, the following has been discovered:
+- Superset tells Druid to merge the results of the metadata query into one single result
+- Druid returns a single result, containing an errorMessage ("error:cannot_merge_diff_types") for every field that has more than one type, but also returns a Type for that field
+- Superset ignores the error and uses the returned type
+
+This means that it will take one week (as that is usually the timeframe for the metadata query) until the new field type will be adapted. 
+In our case, this is not an issue. Should I close this issue?
+COMMENT_INFO
+ramadhan25
+2019-01-14T16:56:30Z
+BEGIN_COMMENT
+i have a same problem, have you solved this issue ?
+COMMENT_INFO
+ramadhan25
+2019-01-14T16:56:30Z
+BEGIN_COMMENT
+hello i solved this issue, this my step i do
+#add configuration druid in your Ambari and restart your druid
+*ambari->druid->config->advance
+	=> custom druid-broker
+	druid.sql.enable = true
+
+#go to your superset ui http://yoursupersetip:9088/databaseview
+*superset->sources->+
+	Database => *yourdatabasename
+	SQLAlchemy URI  => druid://yourdruidbrokerip:8082/druid/v2/sql/
+	Expose in SQL Lab => v
+	Allow Run Sync  => v
+	Allow Run Async  => v
+	Allow CREATE TABLE AS => v
+	save
+
+#connect to your druid table http://yoursupersetip:9088/tablemodelview/list/
+*superset->tables->+
+	Database => *yourdatabasename
+	Table Name => *yourtablenameindruid
+        save
+
+#edit record http://yoursupersetip:9088/tablemodelview/list/
+in your superset table list you can click "Edit Record" and you can change your table data type
+and finn
+COMMENT_INFO
+Maria28281
+2019-01-14T16:56:30Z
+BEGIN_COMMENT
+someone else could be resolving this issue?
+
+COMMENT_INFO
+John-Athan
+2019-01-14T16:56:30Z
+BEGIN_COMMENT
+If I remember correctly, the column type gets updated one week after it has been changed, as superset requests metadata for the last week of available druid data for every topic. So you either need to wait one week or re-add the datasource to superset. 
+COMMENT_INFO
+Maria28281
+2019-01-14T16:56:30Z
+BEGIN_COMMENT
+OMG, well I'm learning superset and just right now I don´t know hos tu re-add the data source to superset, can you send me a link to do it, please.
+
+And I appreciate your answer, have a nice day!
+COMMENT_INFO
+Maria28281
+2019-01-14T16:56:30Z
+BEGIN_COMMENT
+> If I remember correctly, the column type gets updated one week after it has been changed, as superset requests metadata for the last week of available druid data for every topic. So you either need to wait one week or re-add the datasource to superset.
+
+----Could you tell me, where can i find the code in superset to change that time, because i think is a lot of time to wait and see the change if i need to change column types frecuently its imposible to wait.
+ And thank you very much , your help was so helpfull. Best regards
+
+COMMENT_INFO
+John-Athan
+2019-01-14T16:56:30Z
+BEGIN_COMMENT
+Sorry to keep you waiting so long, here you go https://github.com/apache/incubator-superset/blob/e55fe43ca67a29518674a1a2137a3dbd4f166864/superset/connectors/druid/models.py#L647

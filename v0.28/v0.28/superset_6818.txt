@@ -1,0 +1,110 @@
+ISSUE_INFO
+superset
+v0.28
+6818
+datinho
+2019-02-06T07:53:53Z
+2019-02-12T14:21:08Z
+not_pull_request
+v0.28,
+BEGIN_ISSUE
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+Make sure these boxes are checked before submitting your issue - thank you!
+
+- [ ] I have checked the superset logs for python stacktraces and included it here as text if there are any.
+- [ ] I have reproduced the issue with at least the latest released version of superset.
+- [x] I have checked the issue tracker for the same issue and I haven't found one similar.
+
+
+### Superset version
+0.28.1
+
+### Expected results
+Login with google user
+
+### Actual results
+Received an error with missing info after choose the user by google form:
+
+```2019-02-06 08:12:52,735:DEBUG:flask_oauthlib:Prepare oauth2 remote args {'code': '4/6QCzjHNToeh6y5n56Uyzon0g0VlYRqO1OB-_nc4QPlC4JKYwHfuPhXylcS3CjFlUNS1ymh1LglfZzmO5kWpCqhg', 'client_secret': '<<<secret>>>', 'redirect_uri': 'http://domain.com/oauth-authorized/Superset'}
+2019-02-06 08:12:52,736:DEBUG:flask_oauthlib:Request 'https://accounts.google.com/o/oauth2/token' with 'POST' method
+2019-02-06 08:12:52,911:ERROR:flask_appbuilder.security.manager:User info does not have username or email {}
+2019-02-06 08:12:52,922:INFO:werkzeug:192.168.252.38 - - [06/Feb/2019 08:12:52] "GET /oauth-authorized/Superset?code=4/6QCzjHNToeh6y5n56Uyzon0g0VlYRqO1OB-_nc4QPlC4JKYwHfuPhXylcS3CjFlUNS1ymh1LglfZzmO5kWpCqhg&scope=email%20profile%20https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile HTTP/1.1" 302 -
+```
+With follow configuration:
+
+```AUTH_USER_REGISTRATION = True
+AUTH_USER_REGISTRATION_ROLE = "Public"
+AUTH_TYPE = AUTH_OAUTH
+
+OAUTH_PROVIDERS = [
+    {
+       'name': 'Superset',
+       'icon': 'fa-google',
+       'token_key': 'access_token',
+       'remote_app': {
+            'base_url': 'https://www.googleapis.com/oauth2/v2/',
+            'request_token_params': {
+              'scope': 'email profile'
+            },
+            'request_token_url': None,
+            'access_token_url': 'https://accounts.google.com/o/oauth2/token',
+            'authorize_url': 'https://accounts.google.com/o/oauth2/auth',
+            'consumer_key': '<<<key>>>.apps.googleusercontent.com',
+            'consumer_secret': '<<<secret>>>'
+        }
+    }
+]
+```
+The version of Flask-OAuthlib is 0.9.5
+
+I've set the credentail ad 'Web client, the redirect uri' and verified the domain on Google Console API. 
+
+Thanks in advance.
+### Steps to reproduce
+
+
+
+COMMENT_INFO
+datinho
+2019-02-06T07:53:53Z
+BEGIN_COMMENT
+It seems the problem was
+`'name': 'Superset'`
+instead of
+`'name': 'google'`
+
+I close this issue.
+COMMENT_INFO
+hfuthippop
+2019-02-06T07:53:53Z
+BEGIN_COMMENT
+@datinho Excuse me, the redirect url has "oauth-authorized/google". Which file is this?
+COMMENT_INFO
+datinho
+2019-02-06T07:53:53Z
+BEGIN_COMMENT
+It's not a file, it's the oauth provider set on config.py.
+COMMENT_INFO
+hfuthippop
+2019-02-06T07:53:53Z
+BEGIN_COMMENT
+> It's not a file, it's the oauth provider set on config.py.
+
+Thanks. 

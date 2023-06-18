@@ -1,0 +1,14 @@
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/core/AbstractService.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/Application.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/core/ResultGenerator.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/service/impl/TextServiceImpl.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/SentiStrengthWeb.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/core/Service.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/configurer/WebMvcConfigurer.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/core/Mapper.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/service/TextService.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/core/ServiceException.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/web/TextController.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/core/ResultCode.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/core/ProjectConstant.java
+/Users/seedoilz/Codes/web-backend/src/main/java/nju/sentistrength/project/core/Result.java

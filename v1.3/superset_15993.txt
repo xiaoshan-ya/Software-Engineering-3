@@ -1,0 +1,111 @@
+ISSUE_INFO
+superset
+v1.3
+15993
+ktmud
+2021-07-30T22:26:00Z
+2021-07-31T05:06:29Z
+pull_request
+size/L,v1.3,
+BEGIN_ISSUE
+### SUMMARY
+
+This fixes a bug introduced by https://github.com/apache/superset/pull/15699: when the `/dashboard/<dashboardId>/datasets` API is slow and the FilterBox is rendered before this API is returned, it will fail and show a JS error:
+
+https://user-images.githubusercontent.com/335541/127717135-33a6fa18-3cd5-4a52-9a1e-8c9dd2a58806.mp4
+
+This PR makes the async re-rendering process more robust by:
+
+1. Fixing the code in FilterBox that is causing the JS error
+2. Introduce a `PLACEHOLDER_DATASOURCE` for all chart renderers so similar JS errors will not happen for other charts which forgot to handle the case when `datasource` is not loaded.
+3. Don't render JS errors when chart's `datasource` is `PLACEHOLDER_DATASOURCE`. After the API is successfully returned, chart reducer will trigger a re-render.
+
+### BEFORE/AFTER SCREENSHOTS OR ANIMATED GIF
+
+#### Before
+
+See above
+
+#### After
+
+https://user-images.githubusercontent.com/335541/127717159-5c53c35d-42ee-48e2-899b-c32a5edf0ecf.mp4
+
+### TESTING INSTRUCTIONS
+
+1. Insert 
+
+```python
+            import time
+
+            time.sleep(3)
+```
+
+[here](https://github.com/apache/superset/blob/327fb60b81d19c0d158e9836b017f40d0bd99375/superset/dashboards/api.py#L333) to mock a slow response for the `/datasets` API.
+2. Create a dashboard with Filterbox, select a couple of filter columns with verbose names (change column `Label` in datasource editor).
+
+### ADDITIONAL INFORMATION
+<!--- Check any relevant boxes with "x" -->
+<!--- HINT: Include "Fixes #nnn" if you are fixing an existing issue -->
+- [x] Has associated issue: https://github.com/apache/superset/pull/15699
+- [ ] Changes UI
+- [ ] Includes DB Migration (follow approval process in [SIP-59](https://github.com/apache/superset/issues/13351))
+  - [ ] Migration is atomic, supports rollback & is backwards-compatible
+  - [ ] Confirm DB migration upgrade and downgrade tested
+  - [ ] Runtime estimates and downtime expectations provided
+- [ ] Introduces new feature or API
+- [ ] Removes existing feature or API
+
+COMMENT_INFO
+codecov[bot]
+2021-07-30T22:26:00Z
+BEGIN_COMMENT
+# [Codecov](https://codecov.io/gh/apache/superset/pull/15993?src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) Report
+> Merging [#15993](https://codecov.io/gh/apache/superset/pull/15993?src=pr&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) (f94cfc4) into [master](https://codecov.io/gh/apache/superset/commit/c37c56c2e41df40dac83cf388475bc153eed8b14?el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) (c37c56c) will **decrease** coverage by `0.08%`.
+> The diff coverage is `53.84%`.
+
+> :exclamation: Current head f94cfc4 differs from pull request most recent head 32e6cc8. Consider uploading reports for the commit 32e6cc8 to get more accurate results
+[![Impacted file tree graph](https://codecov.io/gh/apache/superset/pull/15993/graphs/tree.svg?width=650&height=150&src=pr&token=KsB0fHcx6l&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)](https://codecov.io/gh/apache/superset/pull/15993?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)
+
+```diff
+@@            Coverage Diff             @@
+##           master   #15993      +/-   ##
+==========================================
+- Coverage   77.04%   76.95%   -0.09%     
+==========================================
+  Files         988      989       +1     
+  Lines       52389    52400      +11     
+  Branches     6626     6634       +8     
+==========================================
+- Hits        40365    40327      -38     
+- Misses      11800    11850      +50     
++ Partials      224      223       -1     
+```
+
+| Flag | Coverage Δ | |
+|---|---|---|
+| javascript | `71.53% <47.82%> (-0.02%)` | :arrow_down: |
+| presto | `?` | |
+
+Flags with carried forward coverage won't be shown. [Click here](https://docs.codecov.io/docs/carryforward-flags?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#carryforward-flags-in-the-pull-request-comment) to find out more.
+
+| [Impacted Files](https://codecov.io/gh/apache/superset/pull/15993?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) | Coverage Δ | |
+|---|---|---|
+| [superset-frontend/src/chart/Chart.jsx](https://codecov.io/gh/apache/superset/pull/15993/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2NoYXJ0L0NoYXJ0LmpzeA==) | `44.64% <0.00%> (-1.66%)` | :arrow_down: |
+| [superset-frontend/src/chart/ChartRenderer.jsx](https://codecov.io/gh/apache/superset/pull/15993/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2NoYXJ0L0NoYXJ0UmVuZGVyZXIuanN4) | `37.17% <0.00%> (-0.80%)` | :arrow_down: |
+| [superset-frontend/src/components/Icons/index.tsx](https://codecov.io/gh/apache/superset/pull/15993/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2NvbXBvbmVudHMvSWNvbnMvaW5kZXgudHN4) | `100.00% <ø> (ø)` | |
+| [...set-frontend/src/components/ListViewCard/index.tsx](https://codecov.io/gh/apache/superset/pull/15993/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2NvbXBvbmVudHMvTGlzdFZpZXdDYXJkL2luZGV4LnRzeA==) | `100.00% <ø> (ø)` | |
+| [...re/components/controls/DatasourceControl/index.jsx](https://codecov.io/gh/apache/superset/pull/15993/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2V4cGxvcmUvY29tcG9uZW50cy9jb250cm9scy9EYXRhc291cmNlQ29udHJvbC9pbmRleC5qc3g=) | `79.06% <ø> (ø)` | |
+| [...perset-frontend/src/views/CRUD/chart/ChartCard.tsx](https://codecov.io/gh/apache/superset/pull/15993/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL3ZpZXdzL0NSVUQvY2hhcnQvQ2hhcnRDYXJkLnRzeA==) | `75.60% <ø> (ø)` | |
+| [...t-frontend/src/views/CRUD/welcome/SavedQueries.tsx](https://codecov.io/gh/apache/superset/pull/15993/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL3ZpZXdzL0NSVUQvd2VsY29tZS9TYXZlZFF1ZXJpZXMudHN4) | `59.59% <ø> (ø)` | |
+| [...end/src/visualizations/FilterBox/transformProps.ts](https://codecov.io/gh/apache/superset/pull/15993/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL3Zpc3VhbGl6YXRpb25zL0ZpbHRlckJveC90cmFuc2Zvcm1Qcm9wcy50cw==) | `0.00% <0.00%> (ø)` | |
+| [superset-frontend/src/chart/chartReducer.ts](https://codecov.io/gh/apache/superset/pull/15993/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2NoYXJ0L2NoYXJ0UmVkdWNlci50cw==) | `33.75% <33.33%> (-0.04%)` | :arrow_down: |
+| [...perset-frontend/src/dashboard/containers/Chart.jsx](https://codecov.io/gh/apache/superset/pull/15993/diff?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation#diff-c3VwZXJzZXQtZnJvbnRlbmQvc3JjL2Rhc2hib2FyZC9jb250YWluZXJzL0NoYXJ0LmpzeA==) | `92.30% <50.00%> (-7.70%)` | :arrow_down: |
+| ... and [10 more](https://codecov.io/gh/apache/superset/pull/15993/diff?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation) | |
+
+------
+
+[Continue to review full report at Codecov](https://codecov.io/gh/apache/superset/pull/15993?src=pr&el=continue&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation).
+> **Legend** - [Click here to learn more](https://docs.codecov.io/docs/codecov-delta?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation)
+> `Δ = absolute <relative> (impact)`, `ø = not affected`, `? = missing data`
+> Powered by [Codecov](https://codecov.io/gh/apache/superset/pull/15993?src=pr&el=footer&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation). Last update [c37c56c...32e6cc8](https://codecov.io/gh/apache/superset/pull/15993?src=pr&el=lastupdated&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation). Read the [comment docs](https://docs.codecov.io/docs/pull-request-comments?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=The+Apache+Software+Foundation).
+

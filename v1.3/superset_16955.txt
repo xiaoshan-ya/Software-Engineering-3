@@ -1,0 +1,25 @@
+ISSUE_INFO
+superset
+v1.3
+16955
+dpgaspar
+2021-10-04T10:20:45Z
+2021-10-04T12:52:58Z
+pull_request
+size/XS,preset-io,v1.3,
+BEGIN_ISSUE
+### SUMMARY
+
+Don't log invalid redirect URL sent by user's.
+
+### ADDITIONAL INFORMATION
+- [ ] Has associated issue:
+- [ ] Required feature flags:
+- [ ] Changes UI
+- [ ] Includes DB Migration (follow approval process in [SIP-59](https://github.com/apache/superset/issues/13351))
+  - [ ] Migration is atomic, supports rollback & is backwards-compatible
+  - [ ] Confirm DB migration upgrade and downgrade tested
+  - [ ] Runtime estimates and downtime expectations provided
+- [ ] Introduces new feature or API
+- [ ] Removes existing feature or API
+

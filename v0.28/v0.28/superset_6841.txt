@@ -1,0 +1,60 @@
+ISSUE_INFO
+superset
+v0.28
+6841
+anshbansal
+2019-02-08T09:20:11Z
+2019-04-12T23:00:06Z
+not_pull_request
+inactive,v0.28,
+BEGIN_ISSUE
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+Make sure these boxes are checked before submitting your issue - thank you!
+
+- [X] I have checked the superset logs for python stacktraces and included it here as text if there are any.
+- [X] I have reproduced the issue with at least the latest released version of superset.
+- [X] I have checked the issue tracker for the same issue and I haven't found one similar.
+
+
+### Superset version
+0.28.1
+
+### Expected results
+- WEBSERVER_THREADS should be read in
+
+### Actual results
+- WEBSERVER_THREADS is not read in
+
+### Steps to reproduce
+- Set WEBSERVER_THREADS to something other than the default value in superset_config.py
+- Set DEBUG to False in superset_config.py
+- Run superset using this docker image https://github.com/tylerFowler/docker-superset
+- Check number of gunicorn threads being run
+COMMENT_INFO
+stale[bot]
+2019-02-08T09:20:11Z
+BEGIN_COMMENT
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions. For admin, please label this issue `.pinned` to prevent stale bot from closing the issue.
+
+COMMENT_INFO
+mistercrunch
+2019-02-08T09:20:11Z
+BEGIN_COMMENT
+We now recommend using the `flask run` and `gunicorn` commands instead, we should deprecate the related config keys related to the `superset runserver` [deprecated] subcommand

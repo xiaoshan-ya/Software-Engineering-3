@@ -1,0 +1,2 @@
+Charts used to show "No Data was returned" or something like this when you apply a filter that causes a chart to not return any data. Now they return blank, which is confusing for end users  
+This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.  
